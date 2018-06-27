@@ -18,8 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 using System.Collections.Generic;
+
 using System.Linq;
 using PointCloud.Exceptions;
+using UnityEngine;
 
 namespace PointCloud
 {
@@ -30,11 +32,13 @@ namespace PointCloud
 
         public PointCloud()
         {
+            Debug.Log("wtf 1");
             _points = new List<T>();        
         }
 
         public PointCloud(IEnumerable<T> collection)
         {
+            Debug.Log("wtf 2");
             _points = new List<T>(collection);
         }
 

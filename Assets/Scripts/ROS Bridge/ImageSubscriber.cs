@@ -1,4 +1,4 @@
-﻿// Ball subscriber:
+﻿
 using ROSBridgeLib;
 using ROSBridgeLib.geometry_msgs;
 using ROSBridgeLib.sensor_msgs;

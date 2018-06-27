@@ -1,8 +1,10 @@
-﻿using ROSBridgeLib;
+﻿using PointCloud;
+using ROSBridgeLib;
 using ROSBridgeLib.geometry_msgs;
 using ROSBridgeLib.sensor_msgs;
 using ROSBridgeLib.std_msgs;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -37,11 +39,13 @@ public class Controller : MonoBehaviour {
     void Start() {
         Debug.Log("starting");
         // Where the rosbridge instance is running, could be localhost, or some external IP
-        ros = new ROSBridgeWebSocketConnection("ws://10.212.232.15", 9090);
+        //ros = new ROSBridgeWebSocketConnection("ws://10.212.232.15", 9090);
+        ros = new ROSBridgeWebSocketConnection("ws://10.212.232.16", 9090);
         Debug.Log("connected");
 
         // Add subscribers and publishers (if any)
         ros.AddSubscriber(typeof(ImageSubscriber));
+        ros.AddSubscriber(typeof(DepthSubscriber));
         ros.AddSubscriber(typeof(AudioSubscriber));
         ros.AddPublisher(typeof(MotorPublisher));
         ros.AddPublisher(typeof(BallControlPublisher));
@@ -106,130 +110,143 @@ public class Controller : MonoBehaviour {
             //Debug.Log("no image stream");
         }
 
+        if (DepthSubscriber.cloud != null) {
+            //Debug.Log("wtf");
+            //Debug.Log(DepthSubscriber.cloud);
+            List<PointXYZRGB> points = (List<PointXYZRGB>)DepthSubscriber.cloud.GetCloud().Points;
+            //Debug.Log(points.Count);
+            foreach (var point in points) {
+                Debug.Log(point.R + " | " + point.G + " | " + point.B + " ----- " + point.X + " | " + point.Y + " | " + point.Z);
+            }
+        }
+        else {
+            //Debug.Log("no cloud stream weird");
+        }
+
         //AudioDataMsg audioMsg = AudioSubscriber.audio;
 
         //if(audioMsg != null) {
 
-            /*
-            AudioSource audioSource = GetComponent<AudioSource>();
-            audioSource.volume = 1;
+        /*
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.volume = 1;
 
 
-            string url = Application.dataPath + "/Scripts/test.wav";
-            WWW www = new WWW(url);
+        string url = Application.dataPath + "/Scripts/test.wav";
+        WWW www = new WWW(url);
 
-            //audioSource.clip = www.GetAudioClip();
+        //audioSource.clip = www.GetAudioClip();
 
-            
 
+
+        //audioSource.Play();
+        if (!audioSource.isPlaying) {
+            AssetDatabase.ImportAsset("Assets/Resources/test.wav");
+            AudioClip clip1 = Resources.Load<AudioClip>("test");
+            //Debug.Log(clip1);
+            //Debug.Log(clip1.length);
+            audioSource.PlayOneShot(clip1);
+            //Resources.UnloadAsset(clip1);
             //audioSource.Play();
-            if (!audioSource.isPlaying) {
-                AssetDatabase.ImportAsset("Assets/Resources/test.wav");
-                AudioClip clip1 = Resources.Load<AudioClip>("test");
-                //Debug.Log(clip1);
-                //Debug.Log(clip1.length);
-                audioSource.PlayOneShot(clip1);
-                //Resources.UnloadAsset(clip1);
-                //audioSource.Play();
-                //Debug.Log("playing");
-                
-            }
+            //Debug.Log("playing");
+
+        }
 
 
 
-            string strCmdText;
-            //strCmdText = "/C copy /b Image1.jpg + Archive.rar Image2.jpg";
-            //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+        string strCmdText;
+        //strCmdText = "/C copy /b Image1.jpg + Archive.rar Image2.jpg";
+        //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
 
-            byte[] tmp;
-            if (oldAudio != null) {
-                tmp = new byte[audioMsg.GetAudio().Length + oldAudio.Length];
-                oldAudio.CopyTo(tmp, 0);
-                audioMsg.GetAudio().CopyTo(tmp, oldAudio.Length);
-                
-                counter += 1;
-            }
-            else {
-                tmp = audioMsg.GetAudio();
-            }
-            
-            
-            if(counter == 20000) {
-                using (FileStream fs = new FileStream("Assets/MySound2.wav", FileMode.Create)) {
-                    //WriteHeader(fs, tmp.Length, 1, 16000);
+        byte[] tmp;
+        if (oldAudio != null) {
+            tmp = new byte[audioMsg.GetAudio().Length + oldAudio.Length];
+            oldAudio.CopyTo(tmp, 0);
+            audioMsg.GetAudio().CopyTo(tmp, oldAudio.Length);
 
-                    /*MemoryStream stream = new MemoryStream();
-                    
-                    stream.Write(tmp, 0, tmp.Length);
+            counter += 1;
+        }
+        else {
+            tmp = audioMsg.GetAudio();
+        }
 
-                    WriteWavHeader(stream, false, 1, 16, 16000, tmp.Length);
 
-                    byte[] bytesArray = stream.ToArray();
-                    float[] floatArray = ConvertByteToFloat(bytesArray);
-                    
-                    AudioSource audioSource = GetComponent<AudioSource>();
-                    AudioClip audioClip = AudioClip.Create("testSound", floatArray.Length, 1, 16000, false);
-                    audioClip.SetData(floatArray, 0);
+        if(counter == 20000) {
+            using (FileStream fs = new FileStream("Assets/MySound2.wav", FileMode.Create)) {
+                //WriteHeader(fs, tmp.Length, 1, 16000);
 
-                    audioSource.clip = audioClip;
-                    audioSource.Play();
+                /*MemoryStream stream = new MemoryStream();
 
-                    fs.Write(bytesArray, 0, bytesArray.Length);
-                    fs.Close();
+                stream.Write(tmp, 0, tmp.Length);
 
-                    File.WriteAllBytes("Assets/Scripts/test.tmp", tmp);
-                    Debug.Log("written to disk");
-                    Debug.Log(tmp.GetValue(100));
-                    Debug.Log(tmp.GetValue(200));
-                    Debug.Log(tmp.GetValue(300));
-                    Debug.Log(tmp.GetValue(600));
-                    Debug.Log(tmp.GetValue(800));
-                }
+                WriteWavHeader(stream, false, 1, 16, 16000, tmp.Length);
 
-                //AudioSource audioSource = GetComponent<AudioSource>();
-                //audioSource.Play();
-            }
+                byte[] bytesArray = stream.ToArray();
+                float[] floatArray = ConvertByteToFloat(bytesArray);
 
-            /*MemoryStream stream = new MemoryStream();
+                AudioSource audioSource = GetComponent<AudioSource>();
+                AudioClip audioClip = AudioClip.Create("testSound", floatArray.Length, 1, 16000, false);
+                audioClip.SetData(floatArray, 0);
 
-            stream.Write(audioMsg.GetAudio(), 0, audioMsg.GetAudio().Length);
-
-            WriteWavHeader(stream, false, 1, 16, 16000, audioMsg.GetAudio().Length);
-
-            byte[] bytesArray = stream.ToArray();
-            float[] floatArray = ConvertByteToFloat(bytesArray);
-
-            AudioSource audioSource = GetComponent<AudioSource>();
-            AudioClip audioClip = AudioClip.Create("testSound", floatArray.Length, 1, 16000, false);
-            audioClip.SetData(floatArray, 0);
-
-            audioSource.clip = audioClip;
-            
-            if (!audioSource.isPlaying) {
+                audioSource.clip = audioClip;
                 audioSource.Play();
+
+                fs.Write(bytesArray, 0, bytesArray.Length);
+                fs.Close();
+
+                File.WriteAllBytes("Assets/Scripts/test.tmp", tmp);
+                Debug.Log("written to disk");
+                Debug.Log(tmp.GetValue(100));
+                Debug.Log(tmp.GetValue(200));
+                Debug.Log(tmp.GetValue(300));
+                Debug.Log(tmp.GetValue(600));
+                Debug.Log(tmp.GetValue(800));
             }
-            */
 
-            //oldAudio = tmp;
+            //AudioSource audioSource = GetComponent<AudioSource>();
+            //audioSource.Play();
+        }
 
-            //audioSource.Play(16000);
+        /*MemoryStream stream = new MemoryStream();
 
-            //AudioClip audioClip = AudioClip.Create("testSound", audio.Length, 1, 16000, false);
-            //audioClip.SetData(audio, 0);
+        stream.Write(audioMsg.GetAudio(), 0, audioMsg.GetAudio().Length);
 
-            //AudioSource.PlayClipAtPoint(audioClip, new Vector3(100, 100, 0), 1.0f);
-            
+        WriteWavHeader(stream, false, 1, 16, 16000, audioMsg.GetAudio().Length);
 
-            /*WAV wav = new WAV(audioMsg.GetAudio());
-            Debug.Log(wav);
-            AudioClip audioClip = AudioClip.Create("testSound", wav.SampleCount, 1, wav.Frequency, false);
-            audioClip.SetData(wav.LeftChannel, 0);
+        byte[] bytesArray = stream.ToArray();
+        float[] floatArray = ConvertByteToFloat(bytesArray);
 
-            AudioSource.PlayClipAtPoint(audioClip, new Vector3(100, 100, 0), 1.0f);*/
-            //audio.clip = audioClip;
-            //audio.Play();
+        AudioSource audioSource = GetComponent<AudioSource>();
+        AudioClip audioClip = AudioClip.Create("testSound", floatArray.Length, 1, 16000, false);
+        audioClip.SetData(floatArray, 0);
+
+        audioSource.clip = audioClip;
+
+        if (!audioSource.isPlaying) {
+            audioSource.Play();
+        }
+        */
+
+        //oldAudio = tmp;
+
+        //audioSource.Play(16000);
+
+        //AudioClip audioClip = AudioClip.Create("testSound", audio.Length, 1, 16000, false);
+        //audioClip.SetData(audio, 0);
+
+        //AudioSource.PlayClipAtPoint(audioClip, new Vector3(100, 100, 0), 1.0f);
+
+
+        /*WAV wav = new WAV(audioMsg.GetAudio());
+        Debug.Log(wav);
+        AudioClip audioClip = AudioClip.Create("testSound", wav.SampleCount, 1, wav.Frequency, false);
+        audioClip.SetData(wav.LeftChannel, 0);
+
+        AudioSource.PlayClipAtPoint(audioClip, new Vector3(100, 100, 0), 1.0f);*/
+        //audio.clip = audioClip;
+        //audio.Play();
         //}
-      
+
         /*for (int y = 0; y < texture.height; y++) {
             for (int x = 0; x < texture.width; x++) {
                 int r = ImageSubscriber.image.GetImage()[texture.width * y + x];
