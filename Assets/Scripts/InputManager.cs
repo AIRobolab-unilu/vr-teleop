@@ -18,6 +18,8 @@ public class InputManager : MonoBehaviour {
     private bool commandsActivated = false;
     private Vector3 initialPosition;
 
+    private string selected;
+
     //Awake is always called before any Start functions
     void Awake() {
         //Check if instance already exists
@@ -39,6 +41,10 @@ public class InputManager : MonoBehaviour {
         InitGame();
     }
 
+    public void Unselect() {
+        this.selected = null;
+    }
+
     //Initializes the game for each level.
     void InitGame() {
         this.initialPosition = new Vector3(cursor.transform.position.x, cursor.transform.position.y, cursor.transform.position.z);
@@ -51,6 +57,10 @@ public class InputManager : MonoBehaviour {
     }
 
     public void Select(string name) {
+
+
+        this.selected = name;
+
         if (this.statusActivated) {
 
             if (name.Equals("Left")) {
@@ -86,18 +96,23 @@ public class InputManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown("left")) {
+        if (Input.GetKeyDown("left") || Input.GetButtonDown("Fire3")) {
             Debug.Log("Show");
             this.status.ShowAll();
             this.statusActivated = true;
         }
-        if (Input.GetKeyDown("right")) {
+        if (Input.GetKeyDown("right") || Input.GetButtonDown("Fire1")) {
             Debug.Log("Show");
             this.commands.ShowAll();
             this.commandsActivated = true;
         }
 
-        if (this.statusActivated) {
+        if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right"))) {
+
+            this.commands.HideAll();
+        }
+
+            if (this.statusActivated) {
 
             Vector3 position = new Vector3(initialPosition.x + 13 * Input.GetAxis("Horizontal"),
                 initialPosition.y + 13 * Input.GetAxis("Vertical"),
@@ -108,6 +123,10 @@ public class InputManager : MonoBehaviour {
         }
 
         if (this.commandsActivated) {
+            Vector3 position = new Vector3(initialPosition.x + 13 * Input.GetAxis("Horizontal"),
+                initialPosition.y + 13 * Input.GetAxis("Vertical"),
+                initialPosition.z);
+            cursor.transform.position = position;
             //Debug.Log(Input.GetAxis("Horizontal Right"));
             //Debug.Log(Input.GetAxis("Vertical Right"));
         }

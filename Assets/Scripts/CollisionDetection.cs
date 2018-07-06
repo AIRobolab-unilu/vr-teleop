@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CollisionDetection : MonoBehaviour {
 
 
-    private SphereCollider collider;
+    private Image image;
 	// Use this for initialization
 	void Start () {
-        this.collider = GetComponent<SphereCollider>();
+        this.image = GetComponent<Image>();
 	}
 	
 	// Update is called once per frame
@@ -18,7 +19,16 @@ public class CollisionDetection : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
+        this.image.color = Color.white;
+
         Debug.Log(other.gameObject.name);
-        InputManager.instance.Select(other.gameObject.name);
+        InputManager.instance.Select(name);
+    }
+
+    private void OnTriggerExit(Collider other) {
+        this.image.color = Color.grey;
+
+        Debug.Log(other.gameObject.name);
+        InputManager.instance.Unselect();
     }
 }
