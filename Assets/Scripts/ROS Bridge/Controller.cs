@@ -13,6 +13,9 @@ using UnityEngine;
 using WWUtils.Audio;
 
 public class Controller : MonoBehaviour {
+
+    public string ip;
+
     private ROSBridgeWebSocketConnection ros = null;
     private Sprite mySprite;
     private SpriteRenderer sr;
@@ -40,8 +43,9 @@ public class Controller : MonoBehaviour {
         Debug.Log("starting");
         // Where the rosbridge instance is running, could be localhost, or some external IP
         //ros = new ROSBridgeWebSocketConnection("ws://10.212.232.15", 9090);
-        ros = new ROSBridgeWebSocketConnection("ws://10.212.232.16", 9090);
-        Debug.Log("connected");
+        //ros = new ROSBridgeWebSocketConnection("ws://10.212.232.16", 9090);
+        ros = new ROSBridgeWebSocketConnection("ws://"+ip, 9090);
+        
 
         // Add subscribers and publishers (if any)
         ros.AddSubscriber(typeof(ImageSubscriber));
@@ -53,7 +57,9 @@ public class Controller : MonoBehaviour {
         AudioSubscriber.audioSource = GetComponent<AudioSource>();
 
         // Fire up the subscriber(s) and publisher(s)
+        Debug.Log("connecting ...");
         ros.Connect();
+        Debug.Log("connected");
 
         // And in some other class where the ball is controlled:
         //TwistMsg msg = new TwistMsg(new Vector3Msg(10, 30, 50), new Vector3Msg(50, 400, 30)); // Circa
@@ -115,9 +121,9 @@ public class Controller : MonoBehaviour {
             //Debug.Log(DepthSubscriber.cloud);
             List<PointXYZRGB> points = (List<PointXYZRGB>)DepthSubscriber.cloud.GetCloud().Points;
             //Debug.Log(points.Count);
-            foreach (var point in points) {
-                Debug.Log(point.R + " | " + point.G + " | " + point.B + " ----- " + point.X + " | " + point.Y + " | " + point.Z);
-            }
+            //foreach (var point in points) {
+                //Debug.Log(point.R + " | " + point.G + " | " + point.B + " ----- " + point.X + " | " + point.Y + " | " + point.Z);
+            //}
         }
         else {
             //Debug.Log("no cloud stream weird");

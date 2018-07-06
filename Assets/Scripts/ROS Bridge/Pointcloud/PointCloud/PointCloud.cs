@@ -32,13 +32,11 @@ namespace PointCloud
 
         public PointCloud()
         {
-            Debug.Log("wtf 1");
             _points = new List<T>();        
         }
 
         public PointCloud(IEnumerable<T> collection)
         {
-            Debug.Log("wtf 2");
             _points = new List<T>(collection);
         }
 

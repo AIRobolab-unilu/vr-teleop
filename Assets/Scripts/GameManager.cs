@@ -41,35 +41,35 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    internal void UpLeft() {
-        Debug.Log("<color=green>Up Left button pressed</color>");
+    public void StatusLeft() {
+        Debug.Log("<color=green>Status Left button pressed</color>");
     }
 
-    internal void UpRight() {
-        Debug.Log("<color=green>Up Right button pressed</color>");
+    public void StatusRight() {
+        Debug.Log("<color=green>Status Right button pressed</color>");
     }
 
-    internal void DownLeft() {
-        Debug.Log("<color=green>Down Left button pressed</color>");
+    public void CommandsLeft() {
+        Debug.Log("<color=green>Commands Left button pressed</color>");
     }
 
-    internal void DownRight() {
-        Debug.Log("<color=green>Down Right button pressed</color>");
+    public void CommandsRight() {
+        Debug.Log("<color=green>Commands Right button pressed</color>");
     }
 
-    internal void LeftUp() {
-        Debug.Log("<color=green>Let Up button pressed</color>");
+    public void StatusUp() {
+        Debug.Log("<color=green>Status Up button pressed</color>");
     }
 
-    internal void LeftDown() {
-        Debug.Log("<color=green>Left Down button pressed</color>");
+    public void StatusDown() {
+        Debug.Log("<color=green>Status Down button pressed</color>");
     }
 
-    internal void RightUp() {
-        Debug.Log("<color=green>Right Up button pressed</color>");
+    public void CommandsUp() {
+        Debug.Log("<color=green>Commands Up button pressed</color>");
     }
 
-    internal void RightDown() {
-        Debug.Log("<color=green>Right Down button pressed</color>");
+    public void CommandsDown() {
+        Debug.Log("<color=green>Commands Down button pressed</color>");
     }
 }

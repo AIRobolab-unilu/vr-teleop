@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,15 +7,16 @@ public class InputManager : MonoBehaviour {
 
     public static InputManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
 
-    public CanvasGroup rootGroup;
+    public ButtonsController status;
+    public ButtonsController commands;
 
-    public CanvasGroup topGroup;
-    public CanvasGroup bottomGroup;
-    public CanvasGroup leftGroup;
-    public CanvasGroup rightGroup;
+   
 
-    private bool activated = false;
-    private string deeplyActivated = "";
+    public GameObject cursor;
+
+    private bool statusActivated = false;
+    private bool commandsActivated = false;
+    private Vector3 initialPosition;
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -39,102 +41,87 @@ public class InputManager : MonoBehaviour {
 
     //Initializes the game for each level.
     void InitGame() {
+        this.initialPosition = new Vector3(cursor.transform.position.x, cursor.transform.position.y, cursor.transform.position.z);
         this.HideAll();
     }
 
     private void HideAll() {
-        this.Hide(this.rootGroup);
-        this.Hide(this.topGroup);
-        this.Hide(this.bottomGroup);
-        this.Hide(this.leftGroup);
-        this.Hide(this.rightGroup);
+        this.status.HideAll();
+        this.commands.HideAll();
     }
 
-    private void Reset() {
-        this.HideAll();
-        this.activated = false;
-        this.deeplyActivated = "";
-    }
+    public void Select(string name) {
+        if (this.statusActivated) {
 
+            if (name.Equals("Left")) {
+                GameManager.instance.StatusLeft();
+            }
+            else if (name.Equals("Top")) {
+                GameManager.instance.StatusUp();
+            }
+            else if (name.Equals("Right")) {
+                GameManager.instance.StatusRight();
+            }
+            else if (name.Equals("Bottom")) {
+                GameManager.instance.StatusDown();
+            }
+            
+        }
 
-    void Hide(CanvasGroup canvasGroup) {
-        canvasGroup.alpha = 0f; //this makes everything transparent
-        canvasGroup.blocksRaycasts = false; //this prevents the UI element to receive input events
-    }
-
-    void Show(CanvasGroup canvasGroup) {
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        if (this.commandsActivated) {
+            if (name.Equals("Left")) {
+                GameManager.instance.StatusLeft();
+            }
+            else if (name.Equals("Top")) {
+                GameManager.instance.CommandsUp();
+            }
+            else if (name.Equals("Right")) {
+                GameManager.instance.CommandsRight();
+            }
+            else if (name.Equals("Bottom")) {
+                GameManager.instance.CommandsDown();
+            }
+        }
     }
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown("space")) {
-            this.Show(this.rootGroup);
-             this. activated = !this.activated;
+        if (Input.GetKeyDown("left")) {
+            Debug.Log("Show");
+            this.status.ShowAll();
+            this.statusActivated = true;
         }
-        if (this.activated) {
-            if (Input.GetKeyDown("up")) {
-                if (this.deeplyActivated.Equals("left")) {
-                    GameManager.instance.UpLeft();
-                    this.Reset();
-                }
-                else if (this.deeplyActivated.Equals("right")) {
-                    GameManager.instance.UpRight();
-                    this.Reset();
-                }
-                else {
-                    this.Show(this.topGroup);
-                    this.deeplyActivated = "up";
-                }
-            }
-            if (Input.GetKeyDown("down")) {
-                if (this.deeplyActivated.Equals("left")) {
-                    GameManager.instance.DownLeft();
-                    this.Reset();
-                }
-                else if (this.deeplyActivated.Equals("right")) {
-                    GameManager.instance.DownRight();
-                    this.Reset();
-                }
-                else {
-                    this.Show(this.bottomGroup);
-                    this.deeplyActivated = "down";
-                }
-                
-            }
-            if (Input.GetKeyDown("left")) {
-                if (this.deeplyActivated.Equals("up")) {
-                    GameManager.instance.LeftUp();
-                    this.Reset();
-                }
-                else if (this.deeplyActivated.Equals("down")) {
-                    GameManager.instance.LeftDown();
-                    this.Reset();
-                }
-                else {
-                    this.Show(this.leftGroup);
-                    this.deeplyActivated = "left";
-                }
-                
-            }
-            if (Input.GetKeyDown("right")) {
-                if (this.deeplyActivated.Equals("up")) {
-                    GameManager.instance.RightUp();
-                    this.Reset();
-                }
-                else if (this.deeplyActivated.Equals("down")) {
-                    GameManager.instance.RightDown();
-                    this.Reset();
-                }
-                else {
-                    this.Show(this.rightGroup);
-                    this.deeplyActivated = "right";
-                }
-                
-            }
+        if (Input.GetKeyDown("right")) {
+            Debug.Log("Show");
+            this.commands.ShowAll();
+            this.commandsActivated = true;
         }
-        
 
+        if (this.statusActivated) {
+
+            Vector3 position = new Vector3(initialPosition.x + 13 * Input.GetAxis("Horizontal"),
+                initialPosition.y + 13 * Input.GetAxis("Vertical"),
+                initialPosition.z);
+            cursor.transform.position = position;
+            //Debug.Log(Input.GetAxis("Horizontal"));
+            //Debug.Log(Input.GetAxis("Vertical"));
+        }
+
+        if (this.commandsActivated) {
+            //Debug.Log(Input.GetAxis("Horizontal Right"));
+            //Debug.Log(Input.GetAxis("Vertical Right"));
+        }
+
+
+        this.checkUICollision();
+
+
+
+
+
+    }
+
+    private void checkUICollision() {
+        
     }
 }

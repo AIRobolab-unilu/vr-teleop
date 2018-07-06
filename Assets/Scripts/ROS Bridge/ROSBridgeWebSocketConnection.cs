@@ -188,8 +188,7 @@ using UnityEngine;
 		 }
 
 		 private void OnMessage(string s) {
-            Debug.LogWarning("OKOKOKOKOK");
-		 	Debug.Log ("Got a message " + s);
+		 	//Debug.Log ("Got a message " + s);
 		 	if((s!= null) && !s.Equals ("")) {
 		 		JSONNode node = JSONNode.Parse(s);
                 //Debug.Log ("Parsed it");

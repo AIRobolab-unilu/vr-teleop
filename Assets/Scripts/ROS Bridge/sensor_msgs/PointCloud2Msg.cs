@@ -24,7 +24,6 @@ namespace ROSBridgeLib {
             private PointCloud<PointXYZRGB> _cloud;
 
             public PointCloud2Msg(JSONNode msg) {
-                Debug.Log("reading from 1st const");
                 _header = new HeaderMsg (msg ["header"]);
 				_height = uint.Parse(msg ["height"]);
 				_width = uint.Parse(msg ["width"]);
@@ -38,12 +37,10 @@ namespace ROSBridgeLib {
                     _fields[i] = new PointFieldMsg(msg["fields"][i]);
                 }
                 _data = System.Convert.FromBase64String(msg["data"]);
-                Debug.Log("reading from 1st const");
                 _cloud = ReadData(_data);
 			}
 
 			public PointCloud2Msg(HeaderMsg header, uint height, uint width, PointFieldMsg fields, bool is_bigendian, uint point_step, uint row_step, byte[] data, bool is_dense) {
-                Debug.Log("reading from 2nd const");
                 _header = header;
 				_height = height;
 				_width = width;
@@ -52,12 +49,10 @@ namespace ROSBridgeLib {
 				_is_bigendian = is_bigendian;
 				_point_step = point_step;
 				_row_step = row_step;
-                Debug.Log("reading from 2nd const");
                 _cloud = ReadData(data);
 			}
 
 			private PointCloud<PointXYZRGB> ReadData(byte[] byteArray) {
-                Debug.Log("received : "+byteArray.Length);
 				PointCloud<PointXYZRGB> cloud = new PointCloud<PointXYZRGB> ();
                 for (int i = 0; i < _width * _height; i++) {
                     float x = System.BitConverter.ToSingle(_data, i * (int)_point_step + 0);
