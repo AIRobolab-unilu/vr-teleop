@@ -9,10 +9,9 @@ public class InputManager : MonoBehaviour {
 
     public ButtonsController status;
     public ButtonsController commands;
+    
 
-   
-
-    public GameObject cursor;
+    //public GameObject cursor;
 
     private bool statusActivated = false;
     private bool commandsActivated = false;
