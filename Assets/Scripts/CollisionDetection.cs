@@ -21,14 +21,14 @@ public class CollisionDetection : MonoBehaviour {
 
         this.image.color = Color.white;
 
-        Debug.Log(other.gameObject.name);
+        //Debug.Log(other.gameObject.name);
         InputManager.instance.Select(name);
     }
 
     private void OnTriggerExit(Collider other) {
         this.image.color = Color.grey;
 
-        Debug.Log(other.gameObject.name);
+        //Debug.Log(other.gameObject.name);
         InputManager.instance.Unselect();
     }
 }

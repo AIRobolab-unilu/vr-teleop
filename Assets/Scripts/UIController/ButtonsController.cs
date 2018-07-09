@@ -47,6 +47,9 @@ public class ButtonsController : MonoBehaviour {
     }
 
     public void HideAll() {
+
+        //this.gameObject.SetActive(false);
+
         this.Hide(top);
         this.Hide(bottom);
         this.Hide(left);
@@ -56,11 +59,23 @@ public class ButtonsController : MonoBehaviour {
     }
 
     public void ShowAll() {
+
+        //this.gameObject.SetActive(true);
+
+
         this.Show(top);
         this.Show(bottom);
         this.Show(left);
         this.Show(right);
 
         this.Show(cursor);
+    }
+
+    public void Reset() {
+        this.HideAll();
+        this.left.GetComponent<Image>().color = Color.grey;
+        this.right.GetComponent<Image>().color = Color.grey;
+        this.top.GetComponent<Image>().color = Color.grey;
+        this.bottom.GetComponent<Image>().color = Color.grey;
     }
 }

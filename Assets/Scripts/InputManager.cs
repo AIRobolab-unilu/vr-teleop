@@ -63,51 +63,21 @@ public class InputManager : MonoBehaviour {
 
 
         this.selected = name;
-
-        if (this.statusActivated) {
-
-            if (name.Equals("Left")) {
-                GameManager.instance.StatusLeft();
-            }
-            else if (name.Equals("Top")) {
-                GameManager.instance.StatusUp();
-            }
-            else if (name.Equals("Right")) {
-                GameManager.instance.StatusRight();
-            }
-            else if (name.Equals("Bottom")) {
-                GameManager.instance.StatusDown();
-            }
-            
-        }
-
-        if (this.commandsActivated) {
-            if (name.Equals("Left")) {
-                GameManager.instance.StatusLeft();
-            }
-            else if (name.Equals("Top")) {
-                GameManager.instance.CommandsUp();
-            }
-            else if (name.Equals("Right")) {
-                GameManager.instance.CommandsRight();
-            }
-            else if (name.Equals("Bottom")) {
-                GameManager.instance.CommandsDown();
-            }
-        }
+        Debug.Log(name);
+       
     }
 
     // Update is called once per frame
     void Update () {
         if (Input.GetKeyDown("left") || Input.GetButtonDown("Fire3")) {
-            Debug.Log("Show");
+            Debug.Log("Show status");
             this.status.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
             this.statusActivated = true;
         }
         if (Input.GetKeyDown("right") || Input.GetButtonDown("Fire1")) {
-            Debug.Log("Show");
+            Debug.Log("Show commands");
             this.commands.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
@@ -116,7 +86,43 @@ public class InputManager : MonoBehaviour {
 
         if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right"))) {
 
-            this.commands.HideAll();
+            if (this.statusActivated) {
+                if (this.selected.Equals("Left")) {
+                    GameManager.instance.StatusLeft();
+                }
+                else if (this.selected.Equals("Top")) {
+                    GameManager.instance.StatusUp();
+                }
+                else if (this.selected.Equals("Right")) {
+                    GameManager.instance.StatusRight();
+                }
+                else if (this.selected.Equals("Bottom")) {
+                    GameManager.instance.StatusDown();
+                }
+
+            }
+
+            if (this.commandsActivated) {
+                if (this.selected.Equals("Left")) {
+                    GameManager.instance.CommandsLeft();
+                }
+                else if (this.selected.Equals("Top")) {
+                    GameManager.instance.CommandsUp();
+                }
+                else if (this.selected.Equals("Right")) {
+                    GameManager.instance.CommandsRight();
+                }
+                else if (this.selected.Equals("Bottom")) {
+                    GameManager.instance.CommandsDown();
+                }
+            }
+
+            this.statusActivated = false;
+            this.commandsActivated = false;
+            this.status.Reset();
+            this.commands.Reset();
+            this.selected = null;
+
         }
 
         /*if (this.statusActivated) {
