@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour {
         
     }
 
+    public void DecodeStatus(string status) {
+
+    }
+
     public void StatusLeft() {
         Debug.Log("<color=green>Status Left button pressed</color>");
     }

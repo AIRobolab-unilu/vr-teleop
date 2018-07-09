@@ -47,13 +47,17 @@ public class InputManager : MonoBehaviour {
 
     //Initializes the game for each level.
     void InitGame() {
-        this.initialPosition = new Vector3(cursor.transform.position.x, cursor.transform.position.y, cursor.transform.position.z);
+        //this.initialPosition = new Vector3(cursor.transform.position.x, cursor.transform.position.y, cursor.transform.position.z);
+        //Debug.Log("saving " + this.initialPosition);
         this.HideAll();
     }
 
     private void HideAll() {
         this.status.HideAll();
         this.commands.HideAll();
+
+        //this.cursor.GetComponent<CanvasGroup>().alpha = 0;
+        //this.cursor.SetActive(false);
     }
 
     public void Select(string name) {
@@ -99,11 +103,15 @@ public class InputManager : MonoBehaviour {
         if (Input.GetKeyDown("left") || Input.GetButtonDown("Fire3")) {
             Debug.Log("Show");
             this.status.ShowAll();
+            //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
+            //this.cursor.SetActive(true);
             this.statusActivated = true;
         }
         if (Input.GetKeyDown("right") || Input.GetButtonDown("Fire1")) {
             Debug.Log("Show");
             this.commands.ShowAll();
+            //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
+            //this.cursor.SetActive(true);
             this.commandsActivated = true;
         }
 
@@ -112,35 +120,35 @@ public class InputManager : MonoBehaviour {
             this.commands.HideAll();
         }
 
-            if (this.statusActivated) {
+        /*if (this.statusActivated) {
 
-            Vector3 position = new Vector3(initialPosition.x + 13 * Input.GetAxis("Horizontal"),
-                initialPosition.y + 13 * Input.GetAxis("Vertical"),
-                initialPosition.z);
-            cursor.transform.position = position;
+            Vector3 position = new Vector3(13 * Input.GetAxis("Horizontal"),
+                + 13 * Input.GetAxis("Vertical"),
+                0);
+
+            //this.status.SetCursor(position);
+
+            //Debug.Log(cursor.GetComponent<RectTransform>().position);
+            //cursor.transform.position = position;
+
+            //cursor.GetComponent<RectTransform>().position = position;
             //Debug.Log(Input.GetAxis("Horizontal"));
             //Debug.Log(Input.GetAxis("Vertical"));
         }
 
         if (this.commandsActivated) {
-            Vector3 position = new Vector3(initialPosition.x + 13 * Input.GetAxis("Horizontal"),
-                initialPosition.y + 13 * Input.GetAxis("Vertical"),
-                initialPosition.z);
-            cursor.transform.position = position;
+            Vector3 position = new Vector3(13 * Input.GetAxis("Horizontal"),
+                +13 * Input.GetAxis("Vertical"),
+                0);
+
+            //this.status.SetCursor(position);
+            //Debug.Log(cursor.GetComponent<RectTransform>().position);
+            //cursor.transform.position = position;
+            //cursor.GetComponent<RectTransform>().position = position;
             //Debug.Log(Input.GetAxis("Horizontal Right"));
             //Debug.Log(Input.GetAxis("Vertical Right"));
-        }
-
-
-        this.checkUICollision();
-
-
-
-
-
-    }
-
-    private void checkUICollision() {
+        }*/
         
     }
+    
 }

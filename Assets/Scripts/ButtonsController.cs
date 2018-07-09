@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +23,20 @@ public class ButtonsController : MonoBehaviour {
         this.match.Add("left", left);
         this.match.Add("right", right);
 
-        this.cursor.transform.position = this.transform.position;
+        //this.cursor.transform.position = this.transform.position;
 
         this.HideAll();
     }
 
+    private void Update() {
+        Vector3 position = new Vector3(80 * Input.GetAxis("Horizontal"),
+                +80 * Input.GetAxis("Vertical"),
+                0);
+
+        this.cursor.transform.localPosition = position;
+        
+        //Debug.Log("me : " + transform.position);
+    }
 
     private void Hide(GameObject image) {
         image.SetActive(false);
