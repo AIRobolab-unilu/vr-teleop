@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
     private string motorsStatus;
     private string dialogStatus;
 
-
+    private bool updateStatus = false;
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -47,11 +47,21 @@ public class GameManager : MonoBehaviour {
 
     //Update is called every frame.
     void Update() {
-        
+
+        this.motivationStatus = "Curiosity 2$Frustration 4";
+
+        if (this.updateStatus) {
+
+            foreach (var items in this.motivationStatus.Split('$')) {
+                string[] tokens = items.Split(' ');
+
+                this.contentController.UpdateValue(tokens[0], tokens[1]);
+            }
+        }
     }
 
     public void DecodeStatus(string status) {
-        string[] tokens = status.Split('$');
+        string[] tokens = status.Split('\n');
 
         this.motivationStatus = tokens[0];
         this.hadrwareStatus = tokens[1];
@@ -60,28 +70,44 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    private void ResetStatusWithTitle(string title) {
+        this.headerController.ShowAll();
+        this.headerController.SetHeader(title);
+
+        this.contentController.Reset();
+    }
+
     //Show hardware status
     public void StatusLeft() {
         Debug.Log("<color=green>Status Left button pressed</color>");
+
+        this.ResetStatusWithTitle("Robot hardware status");
+
+
+
+        this.updateStatus = true;
     }
 
     //Show emotions status
     public void StatusRight() {
         Debug.Log("<color=green>Status Right button pressed</color>");
 
-        this.headerController.ShowAll();
-        this.headerController.SetHeader("Robot emotions");
+        this.ResetStatusWithTitle("Robot emotions");
 
         this.contentController.Add("Curiosity", "0");
         this.contentController.Add("Frustration", "0");
         this.contentController.Add("Pain", "0");
-        this.contentController.Add("Frustration", "0");
+        //this.contentController.Add("Frustration", "0");
+
+        this.updateStatus = true;
 
 
     }
 
     public void CommandsLeft() {
         Debug.Log("<color=green>Commands Left button pressed</color>");
+
+
     }
 
     public void CommandsRight() {
@@ -91,6 +117,12 @@ public class GameManager : MonoBehaviour {
     //Show dialog status
     public void StatusUp() {
         Debug.Log("<color=green>Status Up button pressed</color>");
+
+        this.ResetStatusWithTitle("Robot motors status");
+
+
+
+        this.updateStatus = true;
     }
 
     //Show motors status
