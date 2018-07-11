@@ -20,7 +20,7 @@ public class StatusSubscriber : ROSBridgeSubscriber {
 
     // Important function (I think, converting json to PoseMsg)
     public new static ROSBridgeMsg ParseMessage(JSONNode msg) {
-        return new CompressedImageMsg(msg);
+        return new StringMsg(msg);
     }
 
     // This function should fire on each ros message

@@ -49,10 +49,11 @@ public class Controller : MonoBehaviour {
 
         // Add subscribers and publishers (if any)
         ros.AddSubscriber(typeof(ImageSubscriber));
-        ros.AddSubscriber(typeof(DepthSubscriber));
+        ros.AddSubscriber(typeof(StatusSubscriber));
+        //ros.AddSubscriber(typeof(DepthSubscriber));
         ros.AddSubscriber(typeof(AudioSubscriber));
         ros.AddPublisher(typeof(MotorPublisher));
-        ros.AddPublisher(typeof(BallControlPublisher));
+        //ros.AddPublisher(typeof(BallControlPublisher));
 
         AudioSubscriber.audioSource = GetComponent<AudioSource>();
 

@@ -83,6 +83,9 @@ public class ContentController : MonoBehaviour {
         if (this.variables.ContainsKey(text)) {
             this.variables[text].Value = value;
         }
+        else {
+            this.Add(text, value);
+        }
         
     }
 

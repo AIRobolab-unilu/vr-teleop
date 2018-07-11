@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Text;
 using SimpleJSON;
+using UnityEngine;
 
 /* 
  * @brief ROSBridgeLib
@@ -13,11 +14,13 @@ namespace ROSBridgeLib {
 			private string _data;
 			
 			public StringMsg(JSONNode msg) {
+                Debug.Log("okok");
 				_data = msg["data"];
 			}
 			
 			public StringMsg(string data) {
-				_data = data;
+                Debug.Log("okok");
+                _data = data;
 			}
 			
 			public static string GetMessageType() {
@@ -33,7 +36,8 @@ namespace ROSBridgeLib {
 			}
 			
 			public override string ToYAMLString() {
-				return "{\"data\" : \"" + _data + "\"}";
+                
+                return "{\"data\" : \"" + _data + "\"}";
 			}
 		}
 	}

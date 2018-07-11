@@ -10,12 +10,16 @@ public class GameManager : MonoBehaviour {
     public HeaderController headerController;
     public ContentController contentController;
 
-    private string motivationStatus;
-    private string hadrwareStatus;
-    private string motorsStatus;
-    private string dialogStatus;
+    private string motivationStatus = "";
+    private string hadrwareStatus = "";
+    private string motorsStatus = "";
+    private string dialogStatus = "";
 
     private bool updateStatus = false;
+    private bool updateHardware = false;
+    private bool updateMotivation = false;
+    private bool updateDialog = false;
+    private bool updateMotors = false;
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -48,19 +52,50 @@ public class GameManager : MonoBehaviour {
     //Update is called every frame.
     void Update() {
 
-        this.motivationStatus = "Curiosity 2$Frustration 4";
+        //this.motivationStatus = "Curiosity 2$Frustration 4";
 
-        if (this.updateStatus) {
+        if (this.updateMotivation) {
 
-            foreach (var items in this.motivationStatus.Split('$')) {
-                string[] tokens = items.Split(' ');
+            foreach (var items in this.motivationStatus.Split(':')) {
+                string[] tokens = items.Split('/');
 
-                this.contentController.UpdateValue(tokens[0], tokens[1]);
+
+                //name, low limit, min, value, hight limit, max
+                this.contentController.UpdateValue(tokens[0], tokens[3]);
             }
+        }
+
+        if (this.updateMotors) {
+
+            
+            string[] tokens = this.motorsStatus.Split(':');
+
+
+            this.contentController.UpdateValue("Neck horizontal", tokens[0]);
+            this.contentController.UpdateValue("Neck vertical", tokens[1]);
+            this.contentController.UpdateValue("Left arm horizontal", tokens[2]);
+            this.contentController.UpdateValue("Left arm vertical", tokens[3]);
+            this.contentController.UpdateValue("Left elbow", tokens[4]);
+            this.contentController.UpdateValue("Right arm horizontal", tokens[5]);
+            this.contentController.UpdateValue("Right arm vertical", tokens[6]);
+            this.contentController.UpdateValue("Right elbow", tokens[7]);
+            
+        }
+
+        if (this.updateHardware) {
+
+            
+            string[] tokens = this.hadrwareStatus.Split(':');
+
+            //CPU, RAM
+            this.contentController.UpdateValue("CPU", tokens[0]);
+            this.contentController.UpdateValue("RAM", tokens[1]);
+
         }
     }
 
     public void DecodeStatus(string status) {
+        Debug.Log(status);
         string[] tokens = status.Split('\n');
 
         this.motivationStatus = tokens[0];
@@ -70,7 +105,23 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    private void ResetStatus() {
+        updateStatus = false;
+        updateHardware = false;
+        updateMotivation = false;
+        updateDialog = false;
+        updateMotors = false;
+
+        this.contentController.Reset();
+        this.headerController.HideAll();
+
+
+    }
+
     private void ResetStatusWithTitle(string title) {
+
+        this.ResetStatus();
+
         this.headerController.ShowAll();
         this.headerController.SetHeader(title);
 
@@ -85,7 +136,7 @@ public class GameManager : MonoBehaviour {
 
 
 
-        this.updateStatus = true;
+        this.updateHardware = true;
     }
 
     //Show emotions status
@@ -94,12 +145,12 @@ public class GameManager : MonoBehaviour {
 
         this.ResetStatusWithTitle("Robot emotions");
 
-        this.contentController.Add("Curiosity", "0");
-        this.contentController.Add("Frustration", "0");
-        this.contentController.Add("Pain", "0");
+        //this.contentController.Add("Curiosity", "0");
+        //this.contentController.Add("Frustration", "0");
+        //this.contentController.Add("Pain", "0");
         //this.contentController.Add("Frustration", "0");
 
-        this.updateStatus = true;
+        this.updateMotivation = true;
 
 
     }
@@ -118,16 +169,20 @@ public class GameManager : MonoBehaviour {
     public void StatusUp() {
         Debug.Log("<color=green>Status Up button pressed</color>");
 
-        this.ResetStatusWithTitle("Robot motors status");
+        this.ResetStatus();
 
-
-
-        this.updateStatus = true;
+        this.updateDialog = true;
     }
+
+    
 
     //Show motors status
     public void StatusDown() {
         Debug.Log("<color=green>Status Down button pressed</color>");
+
+        this.ResetStatusWithTitle("Robot motors status");
+
+        this.updateMotors = true;
     }
 
     public void CommandsUp() {
