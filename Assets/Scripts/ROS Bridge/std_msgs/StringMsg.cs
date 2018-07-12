@@ -13,13 +13,11 @@ namespace ROSBridgeLib {
 		public class StringMsg : ROSBridgeMsg {
 			private string _data;
 			
-			public StringMsg(JSONNode msg) {
-                Debug.Log("okok");
+			public StringMsg(JSONNode msg) { 
 				_data = msg["data"];
 			}
 			
 			public StringMsg(string data) {
-                Debug.Log("okok");
                 _data = data;
 			}
 			

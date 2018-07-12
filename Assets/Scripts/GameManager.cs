@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour {
     private bool updateDialog = false;
     private bool updateMotors = false;
 
+    public bool UpdateHeadMovement { get; private set; }
+
     //Awake is always called before any Start functions
     void Awake() {
         //Check if instance already exists
@@ -161,8 +163,12 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    //Control the head
     public void CommandsRight() {
         Debug.Log("<color=green>Commands Right button pressed</color>");
+
+        this.UpdateHeadMovement = true;
+
     }
 
     //Show dialog status

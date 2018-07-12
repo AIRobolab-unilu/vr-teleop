@@ -9,7 +9,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using UnityEditor;
-using UnityEngine;  
+using UnityEngine;
+using UnityEngine.UI;
 using WWUtils.Audio;
 
 public class Controller : MonoBehaviour {
@@ -18,7 +19,11 @@ public class Controller : MonoBehaviour {
 
     private ROSBridgeWebSocketConnection ros = null;
     private Sprite mySprite;
-    private SpriteRenderer sr;
+    //private SpriteRenderer sr;
+    public Image image;
+    public Camera camera;
+
+    private int motorUpdateCounter = 0;
 
     static byte[] RIFF_HEADER = new byte[] { 0x52, 0x49, 0x46, 0x46 };
     static byte[] FORMAT_WAVE = new byte[] { 0x57, 0x41, 0x56, 0x45 };
@@ -32,8 +37,8 @@ public class Controller : MonoBehaviour {
     int i = 0;
 
     void Awake() {
-        sr = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
-        sr.color = new Color(0.9f, 0.9f, 0.9f, 1.0f);
+        //sr = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        //sr.color = new Color(0.9f, 0.9f, 0.9f, 1.0f);
 
         transform.position = new Vector3(1.5f, 1.5f, 0.0f);
     }
@@ -41,6 +46,9 @@ public class Controller : MonoBehaviour {
 
     void Start() {
         Debug.Log("starting");
+        
+        //this.image = GetComponent<Image>();
+
         // Where the rosbridge instance is running, could be localhost, or some external IP
         //ros = new ROSBridgeWebSocketConnection("ws://10.212.232.15", 9090);
         //ros = new ROSBridgeWebSocketConnection("ws://10.212.232.16", 9090);
@@ -62,6 +70,7 @@ public class Controller : MonoBehaviour {
         ros.Connect();
         Debug.Log("connected");
 
+
         // And in some other class where the ball is controlled:
         //TwistMsg msg = new TwistMsg(new Vector3Msg(10, 30, 50), new Vector3Msg(50, 400, 30)); // Circa
 
@@ -75,8 +84,19 @@ public class Controller : MonoBehaviour {
             ros.Disconnect();
         }
     }
+
+
+    private void FixedUpdate() {
+        if (GameManager.instance.UpdateHeadMovement) {
+            this.UpdateHeadMotor();
+        }
+    }
+
     // Update is called once per frame in Unity
     void Update() {
+
+        
+       
 
         //Debug.Log("New frame :");
 
@@ -88,18 +108,7 @@ public class Controller : MonoBehaviour {
         //ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h 5"));
 
 
-        if (Input.GetKeyDown(KeyCode.D)) {
-            Debug.Log("i neck_h 5");
-            ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h -5"));
-            Debug.Log("ok");
-            
-        }
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            Debug.Log("i neck_h -5");
-            ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h 5"));
-            Debug.Log("ok");
-
-        }
+        
         //int size = (int)System.Math.Sqrt(ImageSubscriber.image.GetImage().Length);
 
         Texture2D texture = new Texture2D(2, 2);
@@ -109,9 +118,10 @@ public class Controller : MonoBehaviour {
         if (image != null) {
             texture.LoadImage(ImageSubscriber.image.GetImage());
             texture.Apply();
-            sr.material.mainTexture = texture;
+            //sr.material.mainTexture = texture;
             mySprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-            sr.sprite = mySprite;
+            //sr.sprite = mySprite;
+            this.image.sprite = mySprite;
         }
         else {
             //Debug.Log("no image stream");
@@ -265,6 +275,52 @@ public class Controller : MonoBehaviour {
 
 
         ros.Render();
+    }
+
+    private void UpdateHeadMotor() {
+
+        this.motorUpdateCounter += 1;
+
+        if(this.motorUpdateCounter % 30 != 0) {
+            return;
+        }
+
+        //Debug.Log("camera rotation "+this.camera.transform.rotation.eulerAngles.y);
+
+        //Debug.Log("camera rotation " + this.camera.transform.localRotation.eulerAngles.y);
+
+        int rotation = (int)this.camera.transform.rotation.eulerAngles.y;
+
+        if(rotation >= 180) {
+            rotation -= 360;
+        }
+
+        rotation *= 100 / 90;
+
+        if (rotation > 100) {
+            rotation = 100;
+        }
+        if (rotation < -100) {
+            rotation = -100;
+        }
+
+        Debug.Log("motors : "+rotation);
+
+        ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p neck_h "+ rotation));
+
+        /*if (Input.GetKeyDown(KeyCode.D)) {
+            Debug.Log("i neck_h 5");
+            ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h -5"));
+            Debug.Log("ok");
+
+        }
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Debug.Log("i neck_h -5");
+            ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h 5"));
+            Debug.Log("ok");
+
+        }*/
+
     }
 
     // totalSampleCount needs to be the combined count of samples of all channels. So if the left and right channels contain 1000 samples each, then totalSampleCount should be 2000.
