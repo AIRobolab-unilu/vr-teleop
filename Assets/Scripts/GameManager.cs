@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
     public HeaderController headerController;
     public ContentController contentController;
+    public DialogController dialogController;
 
     private string motivationStatus = "";
     private string hadrwareStatus = "";
@@ -56,18 +57,18 @@ public class GameManager : MonoBehaviour {
 
         //this.motivationStatus = "Curiosity 2$Frustration 4";
 
-        if (this.updateMotivation) {
+        if (this.updateMotivation && !this.motivationStatus.Equals("")) {
 
             foreach (var items in this.motivationStatus.Split(':')) {
                 string[] tokens = items.Split('/');
 
-
+                
                 //name, low limit, min, value, hight limit, max
                 this.contentController.UpdateValue(tokens[0], tokens[3]);
             }
         }
 
-        if (this.updateMotors) {
+        if (this.updateMotors && !this.motorsStatus.Equals("")) {
 
             
             string[] tokens = this.motorsStatus.Split(':');
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour {
             
         }
 
-        if (this.updateHardware) {
+        if (this.updateHardware && !this.hadrwareStatus.Equals("")) {
 
             
             string[] tokens = this.hadrwareStatus.Split(':');
@@ -107,12 +108,19 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    private void ResetStatus() {
+    private void ResetUI() {
+        
         updateStatus = false;
         updateHardware = false;
         updateMotivation = false;
         updateDialog = false;
         updateMotors = false;
+
+        this.ResetDialog();
+        this.ResetStatus();
+    }
+
+    private void ResetStatus() {
 
         this.contentController.Reset();
         this.headerController.HideAll();
@@ -120,9 +128,15 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    private void ResetStatusWithTitle(string title) {
+    private void ResetDialog() {
+        this.dialogController.Reset();
+        this.dialogController.HideAll();
 
-        this.ResetStatus();
+    }
+    
+    private void ShowStatusWithTitle(string title) {
+
+        this.ResetUI();
 
         this.headerController.ShowAll();
         this.headerController.SetHeader(title);
@@ -130,11 +144,18 @@ public class GameManager : MonoBehaviour {
         this.contentController.Reset();
     }
 
+    private void ShowDialog() {
+
+        this.ResetUI();
+
+        this.dialogController.ShowAll();
+    }
+
     //Show hardware status
     public void StatusLeft() {
         Debug.Log("<color=green>Status Left button pressed</color>");
 
-        this.ResetStatusWithTitle("Robot hardware status");
+        this.ShowStatusWithTitle("Robot hardware status");
 
 
 
@@ -145,7 +166,7 @@ public class GameManager : MonoBehaviour {
     public void StatusRight() {
         Debug.Log("<color=green>Status Right button pressed</color>");
 
-        this.ResetStatusWithTitle("Robot emotions");
+        this.ShowStatusWithTitle("Robot emotions");
 
         //this.contentController.Add("Curiosity", "0");
         //this.contentController.Add("Frustration", "0");
@@ -175,7 +196,7 @@ public class GameManager : MonoBehaviour {
     public void StatusUp() {
         Debug.Log("<color=green>Status Up button pressed</color>");
 
-        this.ResetStatus();
+        this.ShowDialog();
 
         this.updateDialog = true;
     }
@@ -186,7 +207,7 @@ public class GameManager : MonoBehaviour {
     public void StatusDown() {
         Debug.Log("<color=green>Status Down button pressed</color>");
 
-        this.ResetStatusWithTitle("Robot motors status");
+        this.ShowStatusWithTitle("Robot motors status");
 
         this.updateMotors = true;
     }
