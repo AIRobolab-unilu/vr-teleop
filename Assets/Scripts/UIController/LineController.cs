@@ -21,8 +21,8 @@ public class LineController : MonoBehaviour {
 	void Update () {
 
 
-        Debug.Log(this.rect.rect.x);
-        Debug.Log(this.headerRect.rect);
+        ///Debug.Log(this.rect.rect.x);
+        //Debug.Log(this.headerRect.rect);
 
         //this.lr.SetPosition(0, new Vector3(this.rect.rect.x+ this.rect.rect.width/2, this.rect.rect.y + this.rect.rect.height / 2));
         //this.lr.SetPosition(1, new Vector3(this.headerRect.rect.x + this.rect.rect.width / 2, this.headerRect.rect.y + this.rect.rect.height / 2));

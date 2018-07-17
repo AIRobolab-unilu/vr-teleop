@@ -249,7 +249,7 @@ using UnityEngine;
 		 				if(_ws != null) {
 		 					string s = ROSBridgeMsg.Publish (topic, msg.ToYAMLString ());
 
-				            Debug.Log ("Sending " + s);
+				            //Debug.Log ("Sending " + s);
 		 					_ws.Send (s);
 		 				}
 		 			}
@@ -257,7 +257,7 @@ using UnityEngine;
 		 			public void CallService(string service, string args) {
 		 				if (_ws != null) {
 		 					string s = ROSBridgeMsg.CallService (service, args);
-		 					Debug.Log ("Sending " + s);
+		 					//Debug.Log ("Sending " + s);
 		 					_ws.Send (s);
 		 				}
 		 			}

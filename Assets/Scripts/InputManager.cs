@@ -68,17 +68,17 @@ public class InputManager : MonoBehaviour {
     void Update () {
 
         OVRInput.Update();
-        //Debug.Log(OVRInput.Get(OVRInput.Touch.One));
+        //Debug.Log(OVRInput.GetDown(OVRInput.Touch.One));
         if (OVRInput.GetDown(OVRInput.Button.One)) {
 
-            Debug.Log(OVRInput.GetDown(OVRInput.Button.One));
+            //Debug.Log(OVRInput.GetDown(OVRInput.Button.One));
         }
 
         //Debug.Log(OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch));
-        Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
+        //Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
 
         //Debug.Log(OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch));
-        Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
+        //Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
 
         if (Input.GetKeyDown("left") || Input.GetButtonDown("Fire3") || OVRInput.GetDown(OVRInput.Button.Three)) {
             Debug.Log("Show status");

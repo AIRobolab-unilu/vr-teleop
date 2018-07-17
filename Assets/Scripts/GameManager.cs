@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour {
     private bool updateMotors = false;
 
     public bool UpdateHeadMovement { get; private set; }
+    public bool UpdateHandsMovement { get; private set; }
+    public bool InitPointLeft { get; set; }
+    public bool InitPointRight { get; set; }
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -181,14 +184,16 @@ public class GameManager : MonoBehaviour {
     public void CommandsLeft() {
         Debug.Log("<color=green>Commands Left button pressed</color>");
 
-
+        this.UpdateHandsMovement = !this.UpdateHandsMovement;
+        this.InitPointLeft = true;
+        this.InitPointRight = true;
     }
 
     //Control the head
     public void CommandsRight() {
         Debug.Log("<color=green>Commands Right button pressed</color>");
 
-        this.UpdateHeadMovement = true;
+        this.UpdateHeadMovement = !this.UpdateHeadMovement;
 
     }
 
