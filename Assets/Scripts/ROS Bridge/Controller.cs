@@ -23,7 +23,7 @@ public class Controller : MonoBehaviour {
     public Image image;
     public Camera camera;
 
-    private int motorUpdateCounter = 0;
+    private int headMotorUpdateCounter = 0;
 
     static byte[] RIFF_HEADER = new byte[] { 0x52, 0x49, 0x46, 0x46 };
     static byte[] FORMAT_WAVE = new byte[] { 0x57, 0x41, 0x56, 0x45 };
@@ -37,6 +37,7 @@ public class Controller : MonoBehaviour {
     int i = 0;
     private Vector3 leftShoulder;
     private Vector3 rightShoulder;
+    private int handsdMotorUpdateCounter;
 
     void Awake() {
         //sr = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
@@ -59,11 +60,13 @@ public class Controller : MonoBehaviour {
 
         // Add subscribers and publishers (if any)
         ros.AddSubscriber(typeof(ImageSubscriber));
-        ros.AddSubscriber(typeof(StatusSubscriber));
-        //ros.AddSubscriber(typeof(DepthSubscriber));
         ros.AddSubscriber(typeof(AudioSubscriber));
+
+        ros.AddSubscriber(typeof(StatusSubscriber));
         ros.AddPublisher(typeof(MotorPublisher));
+
         //ros.AddPublisher(typeof(BallControlPublisher));
+        //ros.AddSubscriber(typeof(DepthSubscriber));
 
         AudioSubscriber.audioSource = GetComponent<AudioSource>();
 
@@ -102,22 +105,24 @@ public class Controller : MonoBehaviour {
     // Update is called once per frame in Unity
     void Update() {
 
+        //Init the left shoulder with the right controller
         if (GameManager.instance.InitPointLeft) {
-            if(OVRInput.Get(OVRInput.Button.PrimaryHandTrigger) ) {
+            if(OVRInput.Get(OVRInput.Button.SecondaryHandTrigger) ) {
 
                 GameManager.instance.InitPointLeft = false;
-                this.leftShoulder = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+                this.leftShoulder = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
 
                 Debug.Log("Left shoulder : " + leftShoulder);
             }
             
         }
 
+        //Init the right shoulder with the left controller
         if (GameManager.instance.InitPointRight) {
-            if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger)) {
+            if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger)) {
 
                 GameManager.instance.InitPointRight = false;
-                this.rightShoulder = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+                this.rightShoulder = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
 
                 Debug.Log("Right shoulder : " + rightShoulder);
             }
@@ -307,9 +312,9 @@ public class Controller : MonoBehaviour {
 
     private void UpdateHeadMotor() {
 
-        this.motorUpdateCounter += 1;
+        this.headMotorUpdateCounter += 1;
 
-        if(this.motorUpdateCounter % 30 != 0) {
+        if(this.headMotorUpdateCounter % 30 != 0) {
             return;
         }
 
@@ -334,7 +339,7 @@ public class Controller : MonoBehaviour {
 
         Debug.Log("motor : "+rotation);
 
-        ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p neck_h "+ rotation));
+        ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p neck_h "+ -rotation));
 
         /*if (Input.GetKeyDown(KeyCode.D)) {
             Debug.Log("i neck_h 5");
@@ -372,13 +377,19 @@ public class Controller : MonoBehaviour {
 
     private void UpdateHandsMovement() {
 
+        this.handsdMotorUpdateCounter += 1;
+
+        if (this.handsdMotorUpdateCounter % 30 != 0) {
+            return;
+        }
+
         Vector3 leftHand = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
 
         double angleXYLeft = GetAngleFromCoordinate(leftHand.x, leftHand.y, leftShoulder.x, leftShoulder.y);
         double angleYZLeft = GetAngleFromCoordinate(leftHand.y, leftHand.z, leftShoulder.y, leftShoulder.z);
 
 
-        ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p left_arm_h " + angleXYLeft));
+        ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p left_arm_v " + angleXYLeft));
         //ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("p left_arm_v " + angleYZLeft));
 
         Debug.Log("angle XY " + angleXYLeft);
