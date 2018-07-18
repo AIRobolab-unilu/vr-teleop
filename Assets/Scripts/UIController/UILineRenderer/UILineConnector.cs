@@ -66,10 +66,9 @@ namespace UnityEngine.UI.Extensions
             }
 
             // Calculate delta from the canvas pivot point
-            for (int i = 0; i < transforms.Length; i++)
-            {
-                points[i] = new Vector2(canvasSpaces[i].x, canvasSpaces[i].y);
-            }
+           
+            points[0] = new Vector2(canvasSpaces[0].x, canvasSpaces[0].y + transforms[0].rect.height / 2);
+            points[1] = new Vector2(canvasSpaces[1].x, canvasSpaces[1].y );
 
             // And assign the converted points to the line renderer
             lr.Points = points;
