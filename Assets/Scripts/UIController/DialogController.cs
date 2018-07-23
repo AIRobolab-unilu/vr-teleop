@@ -9,11 +9,16 @@ public class DialogController : MonoBehaviour {
 
     private Text text;
     private CanvasGroup canvasGroup;
+    private GameObject alternative;
+    private GameObject content;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
         //this.text = this.gameObject.GetComponentInChildren<Text>();
+
+        this.alternative = GameObject.Find("Alternative");
+        this.content = GameObject.Find("Content");
 
         this.HideAll();
 	}
@@ -22,6 +27,11 @@ public class DialogController : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void AddAlternative(string text) {
+        GameObject ui = Instantiate(this.alternative, this.content.transform, true);
+        ui.SetActive(true);
+    }
 
     public void SetHeader(string text) {
         this.text.text = text;

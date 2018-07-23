@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public ContentController contentController;
     public DialogController dialogController;
 
+
     private string motivationStatus = "";
     private string hadrwareStatus = "";
     private string motorsStatus = "";
@@ -98,6 +99,20 @@ public class GameManager : MonoBehaviour {
             this.contentController.UpdateValue("RAM", tokens[1]);
 
         }
+
+        if (this.updateDialog && !this.dialogStatus.Equals("")) {
+
+            Debug.Log(this.dialogStatus);
+
+            this.dialogController.AddAlternative("test");
+
+            string[] tokens = this.hadrwareStatus.Split(':');
+            string question = tokens[0];
+            string answer = tokens[1];
+            string alternatives = tokens[2];
+            string optionals = tokens[3];
+
+        }
     }
 
     public void DecodeStatus(string status) {
@@ -108,6 +123,10 @@ public class GameManager : MonoBehaviour {
         this.hadrwareStatus = tokens[1];
         this.motorsStatus = tokens[2];
         this.dialogStatus = tokens[3];
+        this.dialogStatus = "what's your name$static$I am QT Robot$$my name is QT Robot/I am QT Robot";
+
+
+
 
     }
 
