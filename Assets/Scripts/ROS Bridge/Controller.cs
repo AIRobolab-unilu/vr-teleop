@@ -141,15 +141,16 @@ public class Controller : MonoBehaviour {
         //ros.Publish(MotorPublisher.GetMessageTopic(), new StringMsg("i neck_h 5"));
 
 
-        
-        //int size = (int)System.Math.Sqrt(ImageSubscriber.image.GetImage().Length);
 
+        //int size = (int)System.Math.Sqrt(ImageSubscriber.image.GetImage().Length);
+        Destroy(this.image.sprite.texture);
         Texture2D texture = new Texture2D(2, 2);
 
         CompressedImageMsg image = ImageSubscriber.image;
 
         if (image != null) {
             texture.LoadImage(ImageSubscriber.image.GetImage());
+            
             texture.Apply();
             //sr.material.mainTexture = texture;
             mySprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
