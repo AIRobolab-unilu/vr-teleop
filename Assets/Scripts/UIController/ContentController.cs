@@ -104,9 +104,10 @@ public class ContentController : MonoBehaviour {
             }
 
             Destroy(entry.Value);
-            this.variables = new Dictionary<string, StatusVariable>();
             
         }
+
+        this.variables = new Dictionary<string, StatusVariable>();
 
 
         /*foreach (Transform child in transform) {
@@ -121,6 +122,6 @@ public class ContentController : MonoBehaviour {
             this.first = true;
         }*/
 
-        
+
     }
 }
