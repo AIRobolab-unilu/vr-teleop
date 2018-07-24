@@ -26,12 +26,16 @@ namespace UnityEngine.UI.Extensions
         // Update is called once per frame
         void Update()
         {
-            if (transforms == null || transforms.Length < 1)
+            
+             /*foreach(var v in previousPositions) {
+                Debug.Log(v);
+                   }*/
+                if (transforms == null || transforms.Length < 1)
             {
                 return;
             }
             //Performance check to only redraw when the child transforms move
-            if (previousPositions != null && previousPositions.Length == transforms.Length)
+            /*if (previousPositions != null && previousPositions.Length == transforms.Length)
             {
                 bool updateLine = false;
                 for (int i = 0; i < transforms.Length; i++)
@@ -42,7 +46,7 @@ namespace UnityEngine.UI.Extensions
                     }
                 }
                 if (!updateLine) return;
-            }
+            }*/
 
             // Get the pivot points
             Vector2 thisPivot = rt.pivot;
@@ -66,9 +70,14 @@ namespace UnityEngine.UI.Extensions
             }
 
             // Calculate delta from the canvas pivot point
-           
-            points[0] = new Vector2(canvasSpaces[0].x, canvasSpaces[0].y + transforms[0].rect.height / 2);
-            points[1] = new Vector2(canvasSpaces[1].x, canvasSpaces[1].y );
+            for (int i = 0; i < transforms.Length; i++) {
+                points[i] = new Vector2(canvasSpaces[i].x, canvasSpaces[i].y);
+                
+            }
+
+            //points[0] = new Vector2(canvasSpaces[0].x, canvasSpaces[0].y + transforms[0].rect.height / 2);
+            //points[0] = new Vector2(canvasSpaces[0].x, canvasSpaces[0].y);
+            //points[1] = new Vector2(canvasSpaces[1].x, canvasSpaces[1].y);
 
             // And assign the converted points to the line renderer
             lr.Points = points;

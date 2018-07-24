@@ -143,6 +143,8 @@ public class Controller : MonoBehaviour {
 
 
         //int size = (int)System.Math.Sqrt(ImageSubscriber.image.GetImage().Length);
+
+        //For unloading the previous image
         Destroy(this.image.sprite.texture);
         Texture2D texture = new Texture2D(2, 2);
 

@@ -28,6 +28,8 @@ public class DialogController : MonoBehaviour {
 
         this.alternatives = new List<GameObject>();
 
+        this.alternatives.Add(this.alternative);
+
         this.HideAll();
 	}
 	
@@ -47,15 +49,16 @@ public class DialogController : MonoBehaviour {
 
         }
         else {
-
+            Debug.Log("CREATING ONE");
             ui = Instantiate(this.alternative, this.answers.transform, true);
+            this.alternatives.Add(ui);
 
         }
 
         ui.transform.SetParent(this.answers.transform, false);
         ui.GetComponentInChildren<Text>().text = text;
 
-        this.alternatives.Add(ui);
+        
     }
 
     public void SetHeader(string text) {
@@ -72,20 +75,32 @@ public class DialogController : MonoBehaviour {
 
     public void Reset() {
 
+        this.answer.GetComponent<UILineConnector>().transforms[1] = this.question.GetComponent<RectTransform>();
+
+        this.first = true;
         foreach (GameObject entry in this.alternatives) {
+
+
+            Debug.Log("ITERATION AVEC : "+first);
+
             if (first) {
                 entry.GetComponentInChildren<Text>().text = "";
                 first = false;
                 continue;
 
             }
+            else {
+                Debug.Log("DESTROYING ONE");
+                Destroy(entry);
+            }
 
-            Destroy(entry);
             
-
+            
         }
+        this.first = true;
 
         this.alternatives = new List<GameObject>();
+        this.alternatives.Add(this.alternative);
 
         this.answer.GetComponentInChildren<Text>().text = "";
         this.question.GetComponentInChildren<Text>().text = "";
@@ -100,7 +115,6 @@ public class DialogController : MonoBehaviour {
 
         if (!alternatives.Equals("")) {
             foreach (string item in alternatives.Split('/')) {
-
                 this.AddAlternative(item);
             }
         }
@@ -109,7 +123,6 @@ public class DialogController : MonoBehaviour {
 
         if (!optionals.Equals("")) {
             foreach (string item in optionals.Split('/')) {
-
                 this.AddAlternative(item);
             }
         }
@@ -118,7 +131,7 @@ public class DialogController : MonoBehaviour {
 
         foreach(GameObject item in this.alternatives) {
             if (item.GetComponentInChildren<Text>().text.Equals(chosen)){
-                this.answer.GetComponent<UILineConnector>().transforms[1] = item.GetComponent<RectTransform>();
+                this.answer.GetComponent<UILineConnector>().transforms[1] = item.transform.Find("Bot Anchor").GetComponent<RectTransform>();
                 break;
             }
         }

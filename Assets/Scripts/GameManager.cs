@@ -79,17 +79,23 @@ public class GameManager : MonoBehaviour {
         if (this.updateMotors && !this.motorsStatus.Equals("")) {
 
             
-            string[] tokens = this.motorsStatus.Split(':');
+            //string[] tokens = this.motorsStatus.Split(':');
+
+            foreach (var items in this.motorsStatus.Split(':')) {
+                string[] tokens = items.Split('/');
+
+                this.contentController.UpdateValue(tokens[0], tokens[1]);
+            }
 
 
-            this.contentController.UpdateValue("Neck horizontal", tokens[0]);
+            /*this.contentController.UpdateValue("Neck horizontal", tokens[0]);
             this.contentController.UpdateValue("Neck vertical", tokens[1]);
             this.contentController.UpdateValue("Left arm horizontal", tokens[2]);
             this.contentController.UpdateValue("Left arm vertical", tokens[3]);
             this.contentController.UpdateValue("Left elbow", tokens[4]);
             this.contentController.UpdateValue("Right arm horizontal", tokens[5]);
             this.contentController.UpdateValue("Right arm vertical", tokens[6]);
-            this.contentController.UpdateValue("Right elbow", tokens[7]);
+            this.contentController.UpdateValue("Right elbow", tokens[7]);*/
             
         }
 
@@ -127,7 +133,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void DecodeStatus(string status) {
-        Debug.Log(status);
+        //Debug.Log(status);
         string[] tokens = status.Split('\n');
 
         this.motivationStatus = tokens[0];
