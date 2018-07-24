@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
     //Update is called every frame.
     void Update() {
 
-        this.DecodeStatus("\n\n\n\n");
+        //this.DecodeStatus("\n\n\n\n");
 
         //this.motivationStatus = "Curiosity 2$Frustration 4";
 
@@ -108,22 +108,20 @@ public class GameManager : MonoBehaviour {
 
             this.previousDialogStatus = this.dialogStatus;
 
-
-            this.dialogController.AddAlternative("test");
-
             string[] tokens = this.dialogStatus.Split(':');
 
             //Debug.Log(tokens.Length);
 
             string question = tokens[0];
-            string answer = tokens[1];
-            string alternatives = tokens[2];
-            string optionals = tokens[3];
+            string mode = tokens[1];
+            string answer = tokens[2];
+            string alternatives = tokens[3];
+            string optionals = tokens[4];
+            string chosen = tokens[5];
 
-            this.dialogController.AddAlternative(tokens[0]);
-            this.dialogController.AddAlternative(tokens[1]);
-            this.dialogController.AddAlternative(tokens[2]);
-            this.dialogController.AddAlternative(tokens[3]);
+            this.dialogController.SetStatus(question, mode, answer, alternatives, optionals, chosen);
+
+            
 
         }
     }
@@ -136,11 +134,9 @@ public class GameManager : MonoBehaviour {
         this.hadrwareStatus = tokens[1];
         this.motorsStatus = tokens[2];
         this.dialogStatus = tokens[3];
-        this.dialogStatus = "what's your name:static:I am QT Robot::my name is QT Robot/I am QT Robot";
+        //this.dialogStatus = "what's your name:static:I am QT Robot::my name is QT Robot/I am QT Robot:I am QT Robot";
 
-
-
-
+        
     }
 
     private void ResetUI() {

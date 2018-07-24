@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class DialogController : MonoBehaviour {
 
-    public GameObject content;
+    public GameObject answers;
+    public GameObject answer;
+    public GameObject question;
 
     private Text text;
     private CanvasGroup canvasGroup;
@@ -45,11 +48,11 @@ public class DialogController : MonoBehaviour {
         }
         else {
 
-            ui = Instantiate(this.alternative, this.content.transform, true);
+            ui = Instantiate(this.alternative, this.answers.transform, true);
 
         }
 
-        ui.transform.SetParent(this.content.transform, false);
+        ui.transform.SetParent(this.answers.transform, false);
         ui.GetComponentInChildren<Text>().text = text;
 
         this.alternatives.Add(ui);
@@ -84,19 +87,41 @@ public class DialogController : MonoBehaviour {
 
         this.alternatives = new List<GameObject>();
 
-
-        /*foreach (Transform child in transform) {
-            if (first) {
-                this.SetNameAndValue(child.gameObject, "No value to display", "");
-                
-                first = false;
-                continue;
-            }
-            Destroy(child.gameObject);
-            this.variables = new Dictionary<string, StatusVariable>();
-            this.first = true;
-        }*/
-
+        this.answer.GetComponentInChildren<Text>().text = "";
+        this.question.GetComponentInChildren<Text>().text = "";
 
     }
+
+    public void SetStatus(string question, string mode, string answer, string alternatives, string optionals, string chosen) {
+
+        this.Reset();
+
+        this.question.GetComponentInChildren<Text>().text = question;
+
+        if (!alternatives.Equals("")) {
+            foreach (string item in alternatives.Split('/')) {
+
+                this.AddAlternative(item);
+            }
+        }
+
+        //Debug.Log(!optionals.Equals(""));
+
+        if (!optionals.Equals("")) {
+            foreach (string item in optionals.Split('/')) {
+
+                this.AddAlternative(item);
+            }
+        }
+
+        this.answer.GetComponentInChildren<Text>().text = answer;
+
+        foreach(GameObject item in this.alternatives) {
+            if (item.GetComponentInChildren<Text>().text.Equals(chosen)){
+                this.answer.GetComponent<UILineConnector>().transforms[1] = item.GetComponent<RectTransform>();
+                break;
+            }
+        }
+    }
+    
 }
