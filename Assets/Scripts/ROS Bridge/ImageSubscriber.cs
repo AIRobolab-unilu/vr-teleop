@@ -11,7 +11,8 @@ public class ImageSubscriber : ROSBridgeSubscriber {
     // These two are important
     public new static string GetMessageTopic() {
         //return "/camera/depth_registered/sw_registered/image_rect_raw/compressed";
-        return "/camera_rgb/image_raw/compressed";
+        return "/camera/color/image_raw/compressed";
+        //return "/camera_rgb/image_raw/compressed";
     }
 
     public new static string GetMessageType() {

@@ -68,26 +68,21 @@ public class InputManager : MonoBehaviour {
     void Update () {
 
         OVRInput.Update();
-        //Debug.Log(OVRInput.GetDown(OVRInput.Touch.One));
-        if (OVRInput.GetDown(OVRInput.Button.One)) {
-
-            //Debug.Log(OVRInput.GetDown(OVRInput.Button.One));
-        }
-
+        
         //Debug.Log(OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch));
         //Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch));
 
         //Debug.Log(OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch));
         //Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
 
-        if (Input.GetKeyDown("left") || Input.GetButtonDown("Fire3") || OVRInput.GetDown(OVRInput.Button.Three)) {
+        if (/*Input.GetKeyDown("left") ||*/ Input.GetButtonDown("Fire3") || OVRInput.GetDown(OVRInput.Button.Three)) {
             Debug.Log("Show status");
             this.status.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
             this.statusActivated = true;
         }
-        if (Input.GetKeyDown("right") || Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
+        if (/*Input.GetKeyDown("right") ||*/ Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
             Debug.Log("Show commands");
             this.commands.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
@@ -95,8 +90,8 @@ public class InputManager : MonoBehaviour {
             this.commandsActivated = true;
         }
 
-        if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right")) |
-                OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger)) {
+        if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right") || Input.GetKeyDown("space") ||
+                OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))) {
 
             if (this.statusActivated) {
                 if (this.selected.Equals("Left")) {

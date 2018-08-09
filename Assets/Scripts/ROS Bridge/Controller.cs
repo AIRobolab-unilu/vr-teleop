@@ -145,7 +145,7 @@ public class Controller : MonoBehaviour {
         //int size = (int)System.Math.Sqrt(ImageSubscriber.image.GetImage().Length);
 
         //For unloading the previous image
-        Destroy(this.image.sprite.texture);
+        //DestroyImmediate(this.image.sprite.texture, true);
         Texture2D texture = new Texture2D(2, 2);
 
         CompressedImageMsg image = ImageSubscriber.image;
