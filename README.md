@@ -1,5 +1,5 @@
 
-# vr-teleop
+# vr_teleop
 
 This repository allows to connect to a ROS websocket bridge server and display audio + video through the Oculus Rift. The Oculus can also display informations on the robot and send command to the motors.
 Here is the repository of the server running on the robot. https://github.com/AIRobolab-unilu/vr_teleop_server
