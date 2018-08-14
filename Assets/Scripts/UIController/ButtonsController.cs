@@ -29,8 +29,8 @@ public class ButtonsController : MonoBehaviour {
     }
 
     private void Update() {
-        Vector3 position = new Vector3(80 * Input.GetAxis("Horizontal"),
-                +80 * Input.GetAxis("Vertical"),
+        Vector3 position = new Vector3(125 * Input.GetAxis("Horizontal"),
+                +125 * Input.GetAxis("Vertical"),
                 0);
 
         this.cursor.transform.localPosition = position;

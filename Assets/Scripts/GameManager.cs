@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour {
     public void StatusLeft() {
         Debug.Log("<color=green>Status Left button pressed</color>");
 
-        this.ShowStatusWithTitle("Robot hardware status");
+        this.ShowStatusWithTitle("Hardware Status");
 
 
 
@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour {
     public void StatusRight() {
         Debug.Log("<color=green>Status Right button pressed</color>");
 
-        this.ShowStatusWithTitle("Robot emotions");
+        this.ShowStatusWithTitle("Motivational Component Data");
 
         //this.contentController.Add("Curiosity", "0");
         //this.contentController.Add("Frustration", "0");
@@ -246,7 +246,7 @@ public class GameManager : MonoBehaviour {
     public void StatusDown() {
         Debug.Log("<color=green>Status Down button pressed</color>");
 
-        this.ShowStatusWithTitle("Robot motors status");
+        this.ShowStatusWithTitle("Motor Values");
 
         this.updateMotors = true;
     }

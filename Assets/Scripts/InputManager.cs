@@ -77,17 +77,27 @@ public class InputManager : MonoBehaviour {
 
         if (/*Input.GetKeyDown("left") ||*/ Input.GetButtonDown("Fire3") || OVRInput.GetDown(OVRInput.Button.Three)) {
             Debug.Log("Show status");
+
+            this.statusActivated = true;
+            this.commandsActivated = false;
+            this.commands.Reset();
+
             this.status.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
-            this.statusActivated = true;
         }
         if (/*Input.GetKeyDown("right") ||*/ Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
             Debug.Log("Show commands");
+
+            this.commandsActivated = true;
+            this.statusActivated = false;
+            this.status.Reset();
+
             this.commands.ShowAll();
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
-            this.commandsActivated = true;
+            
+            
         }
 
         if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right") || Input.GetKeyDown("space") ||
