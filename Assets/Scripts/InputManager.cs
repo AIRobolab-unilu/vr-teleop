@@ -39,6 +39,13 @@ public class InputManager : MonoBehaviour {
 
     public void Unselect() {
         this.selected = null;
+
+        if (this.statusActivated) {
+            this.status.RemoveDescription();
+        }
+        else if (this.commandsActivated) {
+            this.commands.RemoveDescription();
+        }
     }
 
     //Initializes the game for each level.
@@ -60,7 +67,28 @@ public class InputManager : MonoBehaviour {
 
 
         this.selected = name;
-        Debug.Log(name);
+
+        string buttonName = "";
+
+        if (this.statusActivated) {
+            buttonName = "Status";
+        }
+        else if (this.commandsActivated) {
+            buttonName = "Commands";
+        }
+
+        
+
+        string title = GameManager.instance.GetTitleFromButton(buttonName + name);
+
+        if (this.statusActivated) {
+            this.status.SetDescription(title);
+        }
+        else if (this.commandsActivated) {
+            this.commands.SetDescription(title);
+        }
+
+        Debug.Log(title);
        
     }
 
@@ -108,13 +136,13 @@ public class InputManager : MonoBehaviour {
                     GameManager.instance.StatusLeft();
                 }
                 else if (this.selected.Equals("Top")) {
-                    GameManager.instance.StatusUp();
+                    GameManager.instance.StatusTop();
                 }
                 else if (this.selected.Equals("Right")) {
                     GameManager.instance.StatusRight();
                 }
                 else if (this.selected.Equals("Bottom")) {
-                    GameManager.instance.StatusDown();
+                    GameManager.instance.StatusBottom();
                 }
 
             }
@@ -124,13 +152,13 @@ public class InputManager : MonoBehaviour {
                     GameManager.instance.CommandsLeft();
                 }
                 else if (this.selected.Equals("Top")) {
-                    GameManager.instance.CommandsUp();
+                    GameManager.instance.CommandsTop();
                 }
                 else if (this.selected.Equals("Right")) {
                     GameManager.instance.CommandsRight();
                 }
                 else if (this.selected.Equals("Bottom")) {
-                    GameManager.instance.CommandsDown();
+                    GameManager.instance.CommandsBottom();
                 }
             }
 

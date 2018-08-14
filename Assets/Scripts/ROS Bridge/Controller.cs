@@ -23,6 +23,8 @@ public class Controller : MonoBehaviour {
     public Image image;
     public Camera camera;
 
+    public Text text;
+
     private int headMotorUpdateCounter = 0;
 
     static byte[] RIFF_HEADER = new byte[] { 0x52, 0x49, 0x46, 0x46 };
@@ -70,6 +72,8 @@ public class Controller : MonoBehaviour {
 
         AudioSubscriber.audioSource = GetComponent<AudioSource>();
 
+        this.text.text = "Connecting to the robot at " + this.ip + " ...";
+
         // Fire up the subscriber(s) and publisher(s)
         Debug.Log("connecting ...");
         ros.Connect();
@@ -81,6 +85,10 @@ public class Controller : MonoBehaviour {
 
         // Publish it (ros is the object defined in the first class)
         //ros.Publish(BallControlPublisher.GetMessageTopic(), msg);
+    }
+
+    private void RemoveText() {
+        this.text.text = "";
     }
 
     // Extremely important to disconnect from ROS. Otherwise packets continue to flow
@@ -134,7 +142,7 @@ public class Controller : MonoBehaviour {
         //Debug.Log("New frame :");
 
         // And in some other class where the ball is controlled:
-        TwistMsg msg = new TwistMsg(new Vector3Msg(10, 20, 30), new Vector3Msg(0, 0, 0)); // Circa
+        //TwistMsg msg = new TwistMsg(new Vector3Msg(10, 20, 30), new Vector3Msg(0, 0, 0)); // Circa
 
         // Publish it (ros is the object defined in the first class)
         //ros.Publish(BallControlPublisher.GetMessageTopic(), msg);
@@ -151,6 +159,7 @@ public class Controller : MonoBehaviour {
         CompressedImageMsg image = ImageSubscriber.image;
 
         if (image != null) {
+            this.RemoveText();
             texture.LoadImage(ImageSubscriber.image.GetImage());
             
             texture.Apply();

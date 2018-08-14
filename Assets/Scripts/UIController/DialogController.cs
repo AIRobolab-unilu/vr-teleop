@@ -10,6 +10,7 @@ public class DialogController : MonoBehaviour {
     public GameObject answers;
     public GameObject answer;
     public GameObject question;
+    public Text title;
 
     private Text text;
     private CanvasGroup canvasGroup;
@@ -69,7 +70,8 @@ public class DialogController : MonoBehaviour {
         this.canvasGroup.alpha = 0;
     }
 
-    public void ShowAll() {
+    public void ShowAll(string title) {
+        this.title.text = title;
         this.canvasGroup.alpha = 1;
     }
 

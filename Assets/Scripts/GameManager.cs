@@ -132,6 +132,39 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public string GetTitleFromButton(string buttonName) {
+        if (buttonName.StartsWith("Status")) {
+            if (buttonName.EndsWith("Left")) {
+                return "Hardware Status";
+            }
+            else if (buttonName.EndsWith("Top")) {
+                return "Dialog State";
+            }
+            else if (buttonName.EndsWith("Right")) {
+                return "Motivational Component Data";
+            }
+            else if (buttonName.EndsWith("Bottom")) {
+                return "Motor Values";
+            }
+
+        }
+        else if (buttonName.StartsWith("Commands")) {
+            if (buttonName.EndsWith("Left")) {
+                return "Enable/Disable Arms Control";
+            }
+            else if (buttonName.EndsWith("Top")) {
+                return "Record";
+            }
+            else if (buttonName.EndsWith("Right")) {
+                return "Enable/Disable Head Control";
+            }
+            else if (buttonName.EndsWith("Bottom")) {
+                return "Play";
+            }
+        }
+        return "";
+    }
+
     public void DecodeStatus(string status) {
         //Debug.Log(status);
         string[] tokens = status.Split('\n');
@@ -181,18 +214,18 @@ public class GameManager : MonoBehaviour {
         this.contentController.Reset();
     }
 
-    private void ShowDialog() {
+    private void ShowDialog(string title) {
 
         this.ResetUI();
 
-        this.dialogController.ShowAll();
+        this.dialogController.ShowAll(title);
     }
 
     //Show hardware status
     public void StatusLeft() {
         Debug.Log("<color=green>Status Left button pressed</color>");
 
-        this.ShowStatusWithTitle("Hardware Status");
+        this.ShowStatusWithTitle(this.GetTitleFromButton("StatusLeft"));
 
 
 
@@ -203,7 +236,7 @@ public class GameManager : MonoBehaviour {
     public void StatusRight() {
         Debug.Log("<color=green>Status Right button pressed</color>");
 
-        this.ShowStatusWithTitle("Motivational Component Data");
+        this.ShowStatusWithTitle(this.GetTitleFromButton("StatusRight"));
 
         //this.contentController.Add("Curiosity", "0");
         //this.contentController.Add("Frustration", "0");
@@ -232,10 +265,10 @@ public class GameManager : MonoBehaviour {
     }
 
     //Show dialog status
-    public void StatusUp() {
+    public void StatusTop() {
         Debug.Log("<color=green>Status Up button pressed</color>");
 
-        this.ShowDialog();
+        this.ShowDialog(this.GetTitleFromButton("StatusUp"));
 
         this.updateDialog = true;
     }
@@ -243,19 +276,19 @@ public class GameManager : MonoBehaviour {
     
 
     //Show motors status
-    public void StatusDown() {
+    public void StatusBottom() {
         Debug.Log("<color=green>Status Down button pressed</color>");
 
-        this.ShowStatusWithTitle("Motor Values");
+        this.ShowStatusWithTitle(this.GetTitleFromButton("StatusDown"));
 
         this.updateMotors = true;
     }
 
-    public void CommandsUp() {
+    public void CommandsTop() {
         Debug.Log("<color=green>Commands Up button pressed</color>");
     }
 
-    public void CommandsDown() {
+    public void CommandsBottom() {
         Debug.Log("<color=green>Commands Down button pressed</color>");
     }
 }

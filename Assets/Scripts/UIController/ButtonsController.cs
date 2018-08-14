@@ -13,6 +13,8 @@ public class ButtonsController : MonoBehaviour {
 
     public GameObject cursor;
 
+    public Text description;
+
     private Dictionary<string, GameObject> match =
             new Dictionary<string, GameObject>();
 
@@ -44,6 +46,14 @@ public class ButtonsController : MonoBehaviour {
 
     private void Show(GameObject image) {
         image.SetActive(true);
+    }
+
+    public void SetDescription(string description) {
+        this.description.text = description;
+    }
+
+    public void RemoveDescription() {
+        this.description.text = "";
     }
 
     public void HideAll() {
