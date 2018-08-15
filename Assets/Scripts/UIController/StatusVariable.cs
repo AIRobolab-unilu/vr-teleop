@@ -34,13 +34,13 @@ public class StatusVariable : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-       
-        //Debug.Log("KOKOKOKOKK" + this.texts);
     }
 
     public void Init() {
         this.texts = gameObject.GetComponentsInChildren<Text>();
     }
+
+    
 
     // Update is called once per frame
     void Update () {

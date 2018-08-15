@@ -32,9 +32,10 @@ public class ContentController : MonoBehaviour {
         GameObject ui;
 
         if (this.first) {
-            this.first = false;
 
             ui = this.variable;
+
+            this.first = false;
 
         }
         else {

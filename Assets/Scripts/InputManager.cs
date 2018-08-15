@@ -131,6 +131,10 @@ public class InputManager : MonoBehaviour {
         if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right") || Input.GetKeyDown("space") ||
                 OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))) {
 
+
+            this.status.RemoveDescription();
+            this.commands.RemoveDescription();
+
             if (this.statusActivated) {
                 if (this.selected.Equals("Left")) {
                     GameManager.instance.StatusLeft();

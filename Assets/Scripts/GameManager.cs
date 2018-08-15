@@ -7,9 +7,13 @@ using System;
 public class GameManager : MonoBehaviour {
 
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-    public HeaderController headerController;
+    public HeaderController statusHeaderController;
     public ContentController contentController;
+
     public DialogController dialogController;
+
+    public GesturesController gesturesController;
+    public HeaderController gesturesHeaderController;
 
 
     private string motivationStatus = "";
@@ -178,7 +182,7 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    private void ResetUI() {
+    private void ResetStatusUI() {
         
         updateStatus = false;
         updateHardware = false;
@@ -188,14 +192,14 @@ public class GameManager : MonoBehaviour {
 
         this.ResetDialog();
         this.ResetStatus();
+        
     }
 
     private void ResetStatus() {
 
         this.contentController.Reset();
-        this.headerController.HideAll();
-
-
+        this.statusHeaderController.HideAll();
+        
     }
 
     private void ResetDialog() {
@@ -203,20 +207,46 @@ public class GameManager : MonoBehaviour {
         this.dialogController.HideAll();
 
     }
-    
+
+    private void ResetGestures() {
+        this.gesturesController.Reset();
+        this.gesturesHeaderController.HideAll();
+
+    }
+
     private void ShowStatusWithTitle(string title) {
 
-        this.ResetUI();
+        this.ResetStatusUI();
+        
+        InputManager.instance.status.RemoveDescription();
+        InputManager.instance.commands.RemoveDescription();
 
-        this.headerController.ShowAll();
-        this.headerController.SetHeader(title);
+        this.statusHeaderController.ShowAll();
+        this.statusHeaderController.SetHeader(title);
 
         this.contentController.Reset();
     }
 
+    private void ShowGesturesWithTitle(string title) {
+
+        this.ResetGestures();
+
+
+        InputManager.instance.status.RemoveDescription();
+        InputManager.instance.commands.RemoveDescription();
+
+        this.gesturesHeaderController.ShowAll();
+        this.gesturesHeaderController.SetHeader(title);
+
+        this.gesturesController.Reset();
+    }
+
     private void ShowDialog(string title) {
 
-        this.ResetUI();
+        this.ResetStatusUI();
+
+        InputManager.instance.status.RemoveDescription();
+        InputManager.instance.commands.RemoveDescription();
 
         this.dialogController.ShowAll(title);
     }
@@ -289,6 +319,11 @@ public class GameManager : MonoBehaviour {
     }
 
     public void CommandsBottom() {
+
+        this.ShowGesturesWithTitle(this.GetTitleFromButton("CommandsDown"));
+
+        
+
         Debug.Log("<color=green>Commands Down button pressed</color>");
     }
 }
