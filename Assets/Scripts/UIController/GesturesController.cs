@@ -46,6 +46,9 @@ public class GesturesController : MonoBehaviour {
 
             this.first = false;
         }
+        else {
+            tmp.Unselect();
+        }
 
         this.gestures.Add(tmp);
 
@@ -63,25 +66,25 @@ public class GesturesController : MonoBehaviour {
 
 
     public void SelectDown() {
-        this.gestures[this.selected].Unselect();
-
-        this.selected -= 1;
-        if(this.selected < 0) {
-            this.selected = this.gestures.Count-1;
-        }
-
-        this.gestures[this.selected].Select();
-
-    }
-
-    public void SelectUp() {
+        
         this.gestures[this.selected].Unselect();
 
         this.selected += 1;
         if (this.selected > this.gestures.Count - 1) {
             this.selected = 0;
         }
-        
+
+        this.gestures[this.selected].Select();
+    }
+
+    public void SelectUp() {
+        this.gestures[this.selected].Unselect();
+
+        this.selected -= 1;
+        if (this.selected < 0) {
+            this.selected = this.gestures.Count - 1;
+        }
+
         this.gestures[this.selected].Select();
     }
 

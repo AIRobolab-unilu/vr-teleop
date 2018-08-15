@@ -34,7 +34,7 @@ public class StatusGesture : MonoBehaviour {
 
     public void Select() {
         Color tempColor = this.image.color;
-        tempColor.a = 1f;
+        tempColor.a = 0.5f;
         this.image.color = tempColor;
     }
 

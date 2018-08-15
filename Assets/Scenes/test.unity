@@ -2335,12 +2335,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 18
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2806,9 +2806,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1569797280}
   - component: {fileID: 1569797284}
-  - component: {fileID: 1569797283}
   - component: {fileID: 1569797282}
   - component: {fileID: 1569797281}
+  - component: {fileID: 1569797283}
   m_Layer: 5
   m_Name: Gesture
   m_TagString: Untagged
@@ -2872,13 +2872,12 @@ CanvasRenderer:
 --- !u!114 &1569797283
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114516724243521496, guid: a1f4dee3fd2f4fe41ab9b18560be967d,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1569797279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e1217bd84f725b429538b2a8fb7c15b, type: 3}
+  m_Script: {fileID: 11500000, guid: 01a83d029245c2f41b74858a0a1fd3a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1569797284

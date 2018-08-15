@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
     public bool UpdateHandsMovement { get; private set; }
     public bool InitPointLeft { get; set; }
     public bool InitPointRight { get; set; }
+    public bool GestureNavigation { get; private set; }
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -217,9 +218,6 @@ public class GameManager : MonoBehaviour {
     private void ShowStatusWithTitle(string title) {
 
         this.ResetStatusUI();
-        
-        InputManager.instance.status.RemoveDescription();
-        InputManager.instance.commands.RemoveDescription();
 
         this.statusHeaderController.ShowAll();
         this.statusHeaderController.SetHeader(title);
@@ -231,10 +229,6 @@ public class GameManager : MonoBehaviour {
 
         this.ResetGestures();
 
-
-        InputManager.instance.status.RemoveDescription();
-        InputManager.instance.commands.RemoveDescription();
-
         this.gesturesHeaderController.ShowAll();
         this.gesturesHeaderController.SetHeader(title);
 
@@ -244,9 +238,6 @@ public class GameManager : MonoBehaviour {
     private void ShowDialog(string title) {
 
         this.ResetStatusUI();
-
-        InputManager.instance.status.RemoveDescription();
-        InputManager.instance.commands.RemoveDescription();
 
         this.dialogController.ShowAll(title);
     }
@@ -298,7 +289,7 @@ public class GameManager : MonoBehaviour {
     public void StatusTop() {
         Debug.Log("<color=green>Status Up button pressed</color>");
 
-        this.ShowDialog(this.GetTitleFromButton("StatusUp"));
+        this.ShowDialog(this.GetTitleFromButton("StatusTop"));
 
         this.updateDialog = true;
     }
@@ -309,7 +300,7 @@ public class GameManager : MonoBehaviour {
     public void StatusBottom() {
         Debug.Log("<color=green>Status Down button pressed</color>");
 
-        this.ShowStatusWithTitle(this.GetTitleFromButton("StatusDown"));
+        this.ShowStatusWithTitle(this.GetTitleFromButton("StatusBottom"));
 
         this.updateMotors = true;
     }
@@ -320,9 +311,17 @@ public class GameManager : MonoBehaviour {
 
     public void CommandsBottom() {
 
-        this.ShowGesturesWithTitle(this.GetTitleFromButton("CommandsDown"));
+        this.ShowGesturesWithTitle(this.GetTitleFromButton("CommandsBottom"));
 
-        
+        this.GestureNavigation = true;
+
+        this.gesturesController.Add("first");
+        this.gesturesController.Add("second");
+        this.gesturesController.Add("third");
+        this.gesturesController.Add("forth");
+        this.gesturesController.Add("fifth");
+
+
 
         Debug.Log("<color=green>Commands Down button pressed</color>");
     }

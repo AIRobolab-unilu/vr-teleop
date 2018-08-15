@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour {
     private Vector3 initialPosition;
 
     private string selected;
+    private bool movedCursorGesture = false;
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -103,6 +104,8 @@ public class InputManager : MonoBehaviour {
         //Debug.Log(OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch));
         //Debug.Log(OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch));
 
+
+        //To display the status buttons
         if (/*Input.GetKeyDown("left") ||*/ Input.GetButtonDown("Fire3") || OVRInput.GetDown(OVRInput.Button.Three)) {
             Debug.Log("Show status");
 
@@ -114,6 +117,8 @@ public class InputManager : MonoBehaviour {
             //this.cursor.GetComponent<CanvasGroup>().alpha = 1;
             //this.cursor.SetActive(true);
         }
+
+        //To display the commands buttons
         if (/*Input.GetKeyDown("right") ||*/ Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
             Debug.Log("Show commands");
 
@@ -128,6 +133,7 @@ public class InputManager : MonoBehaviour {
             
         }
 
+        //To select a button
         if (this.selected != null && (Input.GetButtonDown("Trigger Left") || Input.GetButtonDown("Trigger Right") || Input.GetKeyDown("space") ||
                 OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))) {
 
@@ -172,6 +178,19 @@ public class InputManager : MonoBehaviour {
             this.commands.Reset();
             this.selected = null;
 
+        }
+
+        if (GameManager.instance.GestureNavigation) {
+            if(Input.GetAxis("Vertical") > 0.9f && !this.movedCursorGesture) {
+                GameManager.instance.gesturesController.SelectUp();
+                this.movedCursorGesture = true;
+                Debug.Log("up");
+            } else if (Input.GetAxis("Vertical") < -0.9f && !this.movedCursorGesture) {
+                GameManager.instance.gesturesController.SelectDown();
+                this.movedCursorGesture = true;
+            } else if (Input.GetAxis("Vertical") < 0.9f && Input.GetAxis("Vertical") > -0.9f) {
+                this.movedCursorGesture = false;
+            }
         }
 
         /*if (this.statusActivated) {
