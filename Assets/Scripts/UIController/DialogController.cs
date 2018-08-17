@@ -7,7 +7,8 @@ using UnityEngine.UI.Extensions;
 
 public class DialogController : MonoBehaviour {
 
-    public GameObject answers;
+    public GameObject alternatives;
+    public GameObject optionnals;
     public GameObject answer;
     public GameObject question;
     public Text title;
@@ -16,9 +17,13 @@ public class DialogController : MonoBehaviour {
     private CanvasGroup canvasGroup;
 
     private GameObject alternative;
-    private List<GameObject> alternatives;
-    
-    private bool first = true;
+    private List<GameObject> alternativesGO;
+
+    private GameObject optionnal;
+    private List<GameObject> optionnalsGO;
+
+    private bool firstAlternative = true;
+    private bool firstOptionnal = true;
 
     // Use this for initialization
     void Start () {
@@ -26,10 +31,12 @@ public class DialogController : MonoBehaviour {
         //this.text = this.gameObject.GetComponentInChildren<Text>();
 
         this.alternative = GameObject.Find("Alternative");
+        this.alternativesGO = new List<GameObject>();
+        this.alternativesGO.Add(this.alternative);
 
-        this.alternatives = new List<GameObject>();
-
-        this.alternatives.Add(this.alternative);
+        this.optionnal = GameObject.Find("Option");
+        this.optionnalsGO = new List<GameObject>();
+        this.optionnalsGO.Add(this.optionnal);
 
         this.HideAll();
 	}
@@ -43,22 +50,44 @@ public class DialogController : MonoBehaviour {
 
         GameObject ui;
 
-        if (this.first) {
-            this.first = false;
+        if (this.firstAlternative) {
+            this.firstAlternative = false;
 
             ui = this.alternative;
 
         }
         else {
-            ui = Instantiate(this.alternative, this.answers.transform, true);
-            this.alternatives.Add(ui);
+            ui = Instantiate(this.alternative, this.alternatives.transform, true);
+            this.alternativesGO.Add(ui);
 
         }
 
-        ui.transform.SetParent(this.answers.transform, false);
+        ui.transform.SetParent(this.alternatives.transform, false);
         ui.GetComponentInChildren<Text>().text = text;
 
         
+    }
+
+    public void AddOptionnal(string text) {
+
+        GameObject ui;
+
+        if (this.firstOptionnal) {
+            this.firstOptionnal = false;
+
+            ui = this.optionnal;
+
+        }
+        else {
+            ui = Instantiate(this.optionnal, this.optionnals.transform, true);
+            this.optionnalsGO.Add(ui);
+
+        }
+
+        ui.transform.SetParent(this.optionnals.transform, false);
+        ui.GetComponentInChildren<Text>().text = text;
+
+
     }
 
     public void SetHeader(string text) {
@@ -78,12 +107,12 @@ public class DialogController : MonoBehaviour {
 
         this.answer.GetComponent<UILineConnector>().transforms[1] = this.question.GetComponent<RectTransform>();
 
-        this.first = true;
-        foreach (GameObject entry in this.alternatives) {
+        this.firstAlternative = true;
+        foreach (GameObject entry in this.alternativesGO) {
 
-            if (first) {
+            if (firstAlternative) {
                 entry.GetComponentInChildren<Text>().text = "";
-                first = false;
+                firstAlternative = false;
                 continue;
 
             }
@@ -94,10 +123,13 @@ public class DialogController : MonoBehaviour {
             
             
         }
-        this.first = true;
+        this.firstAlternative = true;
 
-        this.alternatives = new List<GameObject>();
-        this.alternatives.Add(this.alternative);
+        this.alternativesGO = new List<GameObject>();
+        this.alternativesGO.Add(this.alternative);
+
+        this.optionnalsGO = new List<GameObject>();
+        this.optionnalsGO.Add(this.optionnal);
 
         this.answer.GetComponentInChildren<Text>().text = "";
         this.question.GetComponentInChildren<Text>().text = "";
@@ -121,25 +153,36 @@ public class DialogController : MonoBehaviour {
 
         if (!optionals.Equals("")) {
             foreach (string item in optionals.Split('/')) {
-                this.AddAlternative(item);
+                this.AddOptionnal(item);
             }
         }
 
         this.answer.GetComponentInChildren<Text>().text = answer;
 
-        foreach(GameObject item in this.alternatives) {
-            
+        string[] part = chosen.Split('/');
+        GameObject alternative = this.alternativesGO[Int32.Parse(part[0])];
+        GameObject optionnal = this.optionnalsGO[Int32.Parse(part[1])];
 
-            if (this.CombineAlternative(chosen).Equals(item.GetComponentInChildren<Text>().text)){
+        //foreach (GameObject item in this.alternativesGO) {
 
 
-                
-
-                this.answer.GetComponent<UILineConnector>().transforms[1] = item.transform.Find("Bot Anchor").GetComponent<RectTransform>();
-                Debug.Log("I've found " + item);
-                break;
-            }
+        //if (this.CombineAlternative(chosen).Equals(alternative.GetComponentInChildren<Text>().text)){
+        
+        foreach (GameObject tmp in this.optionnalsGO) {
+            Debug.Log(tmp);
+            Debug.Log(optionnal);
+            optionnal.GetComponent<UILineConnector>().transforms[1] = alternative.transform.Find("Bot Anchor").GetComponent<RectTransform>();
         }
+
+        this.answer.GetComponent<UILineConnector>().transforms[1] = optionnal.transform.Find("Bot Anchor").GetComponent<RectTransform>();
+
+
+
+        //this.answer.GetComponent<UILineConnector>().transforms[1] = item.transform.Find("Bot Anchor").GetComponent<RectTransform>();
+        //Debug.Log("I've found " + item);
+        //break;
+        //}
+        //}
     }
 
     private string CombineAlternative(string alternative) {

@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour {
         }
 
 
-        //this.dialogStatus = ":::::::::::::";
+        this.dialogStatus = "set a timer please:passive:how much time:partial_create_callback$(('set', 'create', 'make'), ('timer',)):how much time:0/0";
         if (this.updateDialog && !this.dialogStatus.Equals("") && this.previousDialogStatus != this.dialogStatus) {
 
             this.previousDialogStatus = this.dialogStatus;
