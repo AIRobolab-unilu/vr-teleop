@@ -115,13 +115,15 @@ public class GameManager : MonoBehaviour {
 
         }
 
+
+        //this.dialogStatus = ":::::::::::::";
         if (this.updateDialog && !this.dialogStatus.Equals("") && this.previousDialogStatus != this.dialogStatus) {
 
             this.previousDialogStatus = this.dialogStatus;
 
             string[] tokens = this.dialogStatus.Split(':');
 
-            //Debug.Log(tokens.Length);
+            Debug.Log(dialogStatus);
 
             string question = tokens[0];
             string mode = tokens[1];
@@ -129,6 +131,9 @@ public class GameManager : MonoBehaviour {
             string alternatives = tokens[3];
             string optionals = tokens[4];
             string chosen = tokens[5];
+
+            //alternatives = "callback$((ok,one))";
+            //alternatives += "/test$re";
 
             this.dialogController.SetStatus(question, mode, answer, alternatives, optionals, chosen);
 

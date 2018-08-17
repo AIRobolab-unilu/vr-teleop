@@ -50,7 +50,6 @@ public class DialogController : MonoBehaviour {
 
         }
         else {
-            Debug.Log("CREATING ONE");
             ui = Instantiate(this.alternative, this.answers.transform, true);
             this.alternatives.Add(ui);
 
@@ -82,9 +81,6 @@ public class DialogController : MonoBehaviour {
         this.first = true;
         foreach (GameObject entry in this.alternatives) {
 
-
-            Debug.Log("ITERATION AVEC : "+first);
-
             if (first) {
                 entry.GetComponentInChildren<Text>().text = "";
                 first = false;
@@ -92,7 +88,6 @@ public class DialogController : MonoBehaviour {
 
             }
             else {
-                Debug.Log("DESTROYING ONE");
                 Destroy(entry);
             }
 
@@ -117,7 +112,8 @@ public class DialogController : MonoBehaviour {
 
         if (!alternatives.Equals("")) {
             foreach (string item in alternatives.Split('/')) {
-                this.AddAlternative(item);
+                
+                this.AddAlternative(this.CombineAlternative(item));
             }
         }
 
@@ -132,11 +128,23 @@ public class DialogController : MonoBehaviour {
         this.answer.GetComponentInChildren<Text>().text = answer;
 
         foreach(GameObject item in this.alternatives) {
-            if (item.GetComponentInChildren<Text>().text.Equals(chosen)){
+            
+
+            if (this.CombineAlternative(chosen).Equals(item.GetComponentInChildren<Text>().text)){
+
+
+                
+
                 this.answer.GetComponent<UILineConnector>().transforms[1] = item.transform.Find("Bot Anchor").GetComponent<RectTransform>();
+                Debug.Log("I've found " + item);
                 break;
             }
         }
+    }
+
+    private string CombineAlternative(string alternative) {
+        string[] part = alternative.Split('$');
+        return part[0] + " with " + part[1];
     }
     
 }
