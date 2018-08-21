@@ -119,7 +119,7 @@ public class InputManager : MonoBehaviour {
         }
 
         //To display the commands buttons
-        if (/*Input.GetKeyDown("right") ||*/ Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
+        if (/*Input.GetKeyDown("right") ||*/ !GameManager.instance.GestureNavigation && (Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One))) {
             Debug.Log("Show commands");
 
             this.commandsActivated = true;
@@ -181,16 +181,24 @@ public class InputManager : MonoBehaviour {
         }
 
         if (GameManager.instance.GestureNavigation) {
-            if(Input.GetAxis("Vertical") > 0.9f && !this.movedCursorGesture) {
+
+            float value = -Input.GetAxis("VerticalRightStick");
+            if (value  > 0.9f && !this.movedCursorGesture) {
                 GameManager.instance.gesturesController.SelectUp();
                 this.movedCursorGesture = true;
                 Debug.Log("up");
-            } else if (Input.GetAxis("Vertical") < -0.9f && !this.movedCursorGesture) {
+            } else if (value < -0.9f && !this.movedCursorGesture) {
                 GameManager.instance.gesturesController.SelectDown();
                 this.movedCursorGesture = true;
-            } else if (Input.GetAxis("Vertical") < 0.9f && Input.GetAxis("Vertical") > -0.9f) {
+            } else if (value < 0.9f && value > -0.9f) {
                 this.movedCursorGesture = false;
             }
+
+            if(Input.GetButtonDown("Fire1") || OVRInput.GetDown(OVRInput.Button.One)) {
+                GameManager.instance.PlayGesture();
+            }
+
+
         }
 
         /*if (this.statusActivated) {

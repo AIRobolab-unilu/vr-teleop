@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour {
     private bool updateDialog = false;
     private bool updateMotors = false;
 
+    
+
     public bool UpdateHeadMovement { get; private set; }
     public bool UpdateHandsMovement { get; private set; }
     public bool InitPointLeft { get; set; }
@@ -142,6 +144,16 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void UpdateGestures(string gestures) {
+
+        this.gesturesController.Reset();
+        
+        foreach(string gesture in gestures.Split(':')) {
+            this.gesturesController.Add(gesture);
+        }
+
+    }
+
     public string GetTitleFromButton(string buttonName) {
         if (buttonName.StartsWith("Status")) {
             if (buttonName.EndsWith("Left")) {
@@ -201,6 +213,14 @@ public class GameManager : MonoBehaviour {
         
     }
 
+    public void PlayGesture() {
+        string selected = this.gesturesController.GetSelected();
+        Debug.Log("Playing gesture : " + selected);
+
+        this.ResetGestures();
+        this.GestureNavigation = false;
+    }
+
     private void ResetStatus() {
 
         this.contentController.Reset();
@@ -217,7 +237,7 @@ public class GameManager : MonoBehaviour {
     private void ResetGestures() {
         this.gesturesController.Reset();
         this.gesturesHeaderController.HideAll();
-
+        
     }
 
     private void ShowStatusWithTitle(string title) {
@@ -277,6 +297,8 @@ public class GameManager : MonoBehaviour {
     public void CommandsLeft() {
         Debug.Log("<color=green>Commands Left button pressed</color>");
 
+        this.ResetGestures();
+
         this.UpdateHandsMovement = !this.UpdateHandsMovement;
         this.InitPointLeft = true;
         this.InitPointRight = true;
@@ -286,7 +308,10 @@ public class GameManager : MonoBehaviour {
     public void CommandsRight() {
         Debug.Log("<color=green>Commands Right button pressed</color>");
 
+        this.ResetGestures();
+
         this.UpdateHeadMovement = !this.UpdateHeadMovement;
+
 
     }
 
@@ -312,19 +337,30 @@ public class GameManager : MonoBehaviour {
 
     public void CommandsTop() {
         Debug.Log("<color=green>Commands Up button pressed</color>");
+
+        this.ResetGestures();
+
     }
 
     public void CommandsBottom() {
 
-        this.ShowGesturesWithTitle(this.GetTitleFromButton("CommandsBottom"));
+        this.GestureNavigation = !this.GestureNavigation;
 
-        this.GestureNavigation = true;
+        if (this.GestureNavigation) {
+            this.ShowGesturesWithTitle(this.GetTitleFromButton("CommandsBottom"));
+        }
+        else {
+            this.ResetGestures();
+        }
 
         this.gesturesController.Add("first");
         this.gesturesController.Add("second");
         this.gesturesController.Add("third");
         this.gesturesController.Add("forth");
         this.gesturesController.Add("fifth");
+
+
+        this.UpdateGestures("one:two:three");
 
 
 

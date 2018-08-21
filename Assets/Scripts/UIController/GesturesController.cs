@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ public class GesturesController : MonoBehaviour {
 	}
 
     public void Add(string value) {
+        Debug.Log("adding " + value);
 
         GameObject ui;
 
@@ -101,25 +103,32 @@ public class GesturesController : MonoBehaviour {
 
             }
 
-            Destroy(gesture);
+            //Destroy(gesture, 0f);
+            Debug.Log("destroying " + gesture);
+            gesture.DestroyGO();
 
         }
 
         this.gestures = new List<StatusGesture>();
+        this.selected = 0;
 
 
-        /*foreach (Transform child in transform) {
-            if (first) {
-                this.SetNameAndValue(child.gameObject, "No value to display", "");
-                
-                first = false;
-                continue;
-            }
-            Destroy(child.gameObject);
-            this.variables = new Dictionary<string, StatusVariable>();
-            this.first = true;
-        }*/
+    /*foreach (Transform child in transform) {
+        if (first) {
+            this.SetNameAndValue(child.gameObject, "No value to display", "");
+
+            first = false;
+            continue;
+        }
+        Destroy(child.gameObject);
+        this.variables = new Dictionary<string, StatusVariable>();
+        this.first = true;
+    }*/
 
 
+}
+
+    public string GetSelected() {
+        return this.gestures[this.selected].Gesture;
     }
 }

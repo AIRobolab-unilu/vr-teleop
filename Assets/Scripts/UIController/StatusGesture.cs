@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,5 +43,9 @@ public class StatusGesture : MonoBehaviour {
         Color tempColor = this.image.color;
         tempColor.a = 0f;
         this.image.color = tempColor;
+    }
+
+    internal void DestroyGO() {
+        Destroy(this.gameObject);
     }
 }
