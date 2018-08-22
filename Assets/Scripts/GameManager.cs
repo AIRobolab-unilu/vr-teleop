@@ -86,10 +86,11 @@ public class GameManager : MonoBehaviour {
 
         if (this.updateMotors && !this.motorsStatus.Equals("")) {
 
-            
+            Debug.Log(motorsStatus);
             //string[] tokens = this.motorsStatus.Split(':');
 
             foreach (var items in this.motorsStatus.Split(':')) {
+                //Debug.Log(items);
                 string[] tokens = items.Split('/');
 
                 this.contentController.UpdateValue(tokens[0], tokens[1]);
@@ -173,13 +174,13 @@ public class GameManager : MonoBehaviour {
         }
         else if (buttonName.StartsWith("Commands")) {
             if (buttonName.EndsWith("Left")) {
-                return "Enable/Disable Arms Control";
+                return "Toggle Arms Control";
             }
             else if (buttonName.EndsWith("Top")) {
                 return "Record";
             }
             else if (buttonName.EndsWith("Right")) {
-                return "Enable/Disable Head Control";
+                return "Toggle Head Control";
             }
             else if (buttonName.EndsWith("Bottom")) {
                 return "Play";
