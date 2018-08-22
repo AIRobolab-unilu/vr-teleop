@@ -11,6 +11,8 @@ public class GesturesController : MonoBehaviour {
     private bool first = true;
     private int selected = 0;
 
+    private int maxDisplay = 10;
+
     // Use this for initialization
     void Start () {
 
@@ -54,6 +56,10 @@ public class GesturesController : MonoBehaviour {
 
         this.gestures.Add(tmp);
 
+        if(this.gestures.Count > this.maxDisplay) {
+            ui.SetActive(false);
+        }
+
         tmp.Gesture = value;
 
 
@@ -70,13 +76,28 @@ public class GesturesController : MonoBehaviour {
     public void SelectDown() {
         
         this.gestures[this.selected].Unselect();
+        //this.gestures[this.selected].gameObject.SetActive(false);
 
         this.selected += 1;
         if (this.selected > this.gestures.Count - 1) {
             this.selected = 0;
+
+            if (!this.gestures[this.selected].gameObject.activeSelf) {
+
+                for (int i = 0; i < this.maxDisplay; i += 1) {
+                    this.gestures[this.gestures.Count - i-1].gameObject.SetActive(false);
+                    this.gestures[i].gameObject.SetActive(true);
+                }
+            }
+        }
+
+        if (!this.gestures[this.selected].gameObject.activeSelf) {
+            this.gestures[this.selected - this.maxDisplay - 1].gameObject.SetActive(false);
+            this.gestures[this.selected].gameObject.SetActive(true);
         }
 
         this.gestures[this.selected].Select();
+
     }
 
     public void SelectUp() {
@@ -84,7 +105,26 @@ public class GesturesController : MonoBehaviour {
 
         this.selected -= 1;
         if (this.selected < 0) {
+
             this.selected = this.gestures.Count - 1;
+
+            if (!this.gestures[this.selected].gameObject.activeSelf) {
+                
+                for (int i = 0; i < this.maxDisplay; i += 1) {
+                    this.gestures[this.selected - i].gameObject.SetActive(true);
+                    this.gestures[i].gameObject.SetActive(false);
+                }
+            }
+
+            
+        }
+
+        if (!this.gestures[this.selected].gameObject.activeSelf) {
+
+            this.gestures[this.selected + this.maxDisplay + 1].gameObject.SetActive(false);
+            this.gestures[this.selected].gameObject.SetActive(true);
+
+            
         }
 
         this.gestures[this.selected].Select();

@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
     public bool InitPointLeft { get; set; }
     public bool InitPointRight { get; set; }
     public bool GestureNavigation { get; private set; }
+    public string Gesture { get; set; }
 
     //Awake is always called before any Start functions
     void Awake() {
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour {
 
     //Initializes the game for each level.
     void InitGame() {
-
+        this.Gesture = null;
     }
 
     
@@ -216,6 +217,7 @@ public class GameManager : MonoBehaviour {
     public void PlayGesture() {
         string selected = this.gesturesController.GetSelected();
         Debug.Log("Playing gesture : " + selected);
+        this.Gesture = selected;
 
         this.ResetGestures();
         this.GestureNavigation = false;
@@ -235,7 +237,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void ResetGestures() {
-        this.gesturesController.Reset();
+        //this.gesturesController.Reset();
         this.gesturesHeaderController.HideAll();
         
     }
@@ -257,7 +259,7 @@ public class GameManager : MonoBehaviour {
         this.gesturesHeaderController.ShowAll();
         this.gesturesHeaderController.SetHeader(title);
 
-        this.gesturesController.Reset();
+        //this.gesturesController.Reset();
     }
 
     private void ShowDialog(string title) {
@@ -353,14 +355,14 @@ public class GameManager : MonoBehaviour {
             this.ResetGestures();
         }
 
-        this.gesturesController.Add("first");
+        /*this.gesturesController.Add("first");
         this.gesturesController.Add("second");
         this.gesturesController.Add("third");
         this.gesturesController.Add("forth");
         this.gesturesController.Add("fifth");
 
 
-        this.UpdateGestures("one:two:three");
+        this.UpdateGestures("one:two:three");*/
 
 
 

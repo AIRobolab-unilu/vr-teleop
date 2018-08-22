@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e45d50475d01374da7647c5739d5c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.0.15
+  ip: 10.212.232.25
   image: {fileID: 1560092244}
   camera: {fileID: 1876625636}
   text: {fileID: 611626925}
@@ -2214,7 +2214,7 @@ MonoBehaviour:
   m_useNativeSize: 0
   m_points:
   - {x: 0.49999833, y: 0.5}
-  - {x: 0.49999833, y: 47.900047}
+  - {x: 0.49999833, y: 47.90004}
   lineThickness: 2
   relativeSize: 0
   lineList: 0

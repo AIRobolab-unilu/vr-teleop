@@ -63,9 +63,13 @@ public class Controller : MonoBehaviour {
         // Add subscribers and publishers (if any)
         ros.AddSubscriber(typeof(ImageSubscriber));
         ros.AddSubscriber(typeof(AudioSubscriber));
+        ros.AddSubscriber(typeof(GesturesSubscriber));
 
         ros.AddSubscriber(typeof(StatusSubscriber));
         ros.AddPublisher(typeof(MotorPublisher));
+        ros.AddPublisher(typeof(GesturePublisher));
+
+
 
         //ros.AddPublisher(typeof(BallControlPublisher));
         //ros.AddSubscriber(typeof(DepthSubscriber));
@@ -105,6 +109,12 @@ public class Controller : MonoBehaviour {
         }
         if (GameManager.instance.UpdateHandsMovement && !GameManager.instance.InitPointLeft && !GameManager.instance.InitPointRight) {
             this.UpdateHandsMovement();
+        }
+        if (GameManager.instance.Gesture != null) {
+                
+            ros.Publish(GesturePublisher.GetMessageTopic(), new ROSBridgeLib.std_msgs.StringMsg(GameManager.instance.Gesture));
+            GameManager.instance.Gesture = null;
+
         }
     }
 

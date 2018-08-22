@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class GesturesSubscriber : ROSBridgeSubscriber {
 
-    private static string gestures;
+    private static string gestures = "";
 
     // These two are important
     public new static string GetMessageTopic() {
